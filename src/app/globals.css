@@ -1,67 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    /* High Contrast Light Theme - Enhanced for 40+ audience */
-    --background: 0 0% 100%; /* Pure White */
-    --foreground: 0 0% 0%; /* Pure Black for maximum contrast */
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 0 0% 0%; /* Pure Black */
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 0 0% 0%; /* Pure Black */
-    --primary: 215 100% 50%; /* Bright Blue - More visible */
-    --primary-foreground: 0 0% 100%; /* White */
-    --secondary: 210 20% 96%; /* Very Light Gray */
-    --secondary-foreground: 215 100% 30%; /* Darker Blue */
-    --muted: 210 20% 96%; /* Very Light Gray */
-    --muted-foreground: 215 5% 30%; /* Dark Gray - Improved contrast */
-    --accent: 215 100% 96%; /* Very Light Blue */
-    --accent-foreground: 215 100% 30%; /* Darker Blue */
-    --destructive: 0 100% 45%; /* Darker Red for better contrast */
-    --destructive-foreground: 0 0% 100%; /* White */
-    --border: 215 20% 80%; /* Medium Gray Border */
-    --input: 215 20% 95%; /* Light Gray Input */
-    --ring: 215 100% 50%; /* Bright Blue Ring */
-    --radius: 0.5rem;
-
-    /* Simplified Custom Colors - High Contrast for 40+ audience */
-    --lotto-blue: 215 100% 45%; /* Darker Blue for better contrast */
-    --lotto-green: 145 100% 35%; /* Darker Green for better contrast */
-    --lotto-purple: 270 100% 45%; /* Darker Purple for better contrast */
-    --lotto-red: 0 100% 45%; /* Darker Red for better contrast */
-    --lotto-orange: 25 100% 45%; /* Darker Orange for better contrast */
-    --lotto-yellow: 45 100% 45%; /* Darker Yellow for better contrast */
-    --lotto-teal: 180 100% 35%; /* Darker Teal for better contrast */
-    --lotto-pink: 330 100% 45%; /* Darker Pink for better contrast */
-    --lotto-authority: 270 100% 40%; /* Darker Authority Purple */
-  }
-
   .dark {
-    /* Dark Theme Base Colors - Based on Lottery USA reference */
-    --background: 220 15% 5%; /* Very Dark Blue/Black */
+    /* Dark Theme Base Colors - Based on Lottery USA screenshots */
+    --background: 220 10% 8%; /* Very Dark Blue/Black */
     --foreground: 0 0% 98%; /* Near White */
-    --card: 220 15% 12%; /* Dark Grey/Blue Card */
+    --card: 220 10% 15%; /* Dark Grey/Blue Card */
     --card-foreground: 0 0% 98%; /* Near White */
-    --popover: 220 15% 10%; /* Slightly darker popover */
+    --popover: 220 10% 12%; /* Slightly darker popover */
     --popover-foreground: 0 0% 98%; /* Near White */
-    --primary: 215 100% 65%; /* Brighter Blue for buttons/links */
+    --primary: 210 100% 60%; /* Vibrant Blue for buttons/links */
     --primary-foreground: 0 0% 100%; /* White */
-    --secondary: 220 15% 15%; /* Darker secondary */
+    --secondary: 220 10% 18%; /* Darker secondary */
     --secondary-foreground: 0 0% 90%; /* Lighter Gray */
-    --muted: 220 15% 15%; /* Darker muted */
-    --muted-foreground: 0 0% 60%; /* Medium Gray for less important text */
-    --accent: 215 100% 50%; /* Accent Blue */
+    --muted: 220 10% 18%; /* Darker muted */
+    --muted-foreground: 220 10% 65%; /* Medium Gray for less important text */
+    --accent: 210 100% 50%; /* Accent Blue */
     --accent-foreground: 0 0% 100%; /* White */
     --destructive: 0 80% 60%; /* Brighter Red */
     --destructive-foreground: 0 0% 100%; /* White */
-    --border: 220 15% 20%; /* Subtle border, slightly lighter than card */
-    --input: 220 15% 15%; /* Darker input */
-    --ring: 215 100% 65%; /* Brighter Blue Ring */
+    --border: 220 10% 25%; /* Subtle border, slightly lighter than card */
+    --input: 220 10% 18%; /* Darker input */
+    --ring: 210 100% 60%; /* Vibrant Blue Ring */
 
     /* Custom Dark Colors - Adjust if needed */
-    --lotto-blue: 215 100% 65%;
+    --lotto-blue: 210 100% 60%;
     --lotto-green: 145 100% 60%;
     --lotto-purple: 270 100% 65%;
     --lotto-red: 0 100% 65%; /* Keep bright red for special balls */
@@ -71,169 +31,30 @@
     --lotto-pink: 330 100% 65%;
     --lotto-authority: 270 100% 65%;
   }
-}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  
-  html {
-    @apply scroll-smooth;
-    /* Increase base font size for entire document */
-    font-size: 18px; /* Larger base font size for 40+ audience */
-  }
-  
+
+/* Add Poppins font import with more weights for better typography control */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+
+
   body {
-    /* Increased base font size to text-xl (1.25rem) */
-    @apply bg-background text-foreground text-xl leading-relaxed;
-    font-family: 'Inter', sans-serif;
-    @apply transition-colors duration-300;
-    /* Increased line height for better readability */
-    line-height: 1.6;
-    /* Increased letter spacing slightly for better readability */
-    letter-spacing: 0.01em;
-  }
-  
-  /* Simplified body background */
-  .dark body {
-    @apply bg-[hsl(var(--background))];
-  }
-  
-  /* Simplified Lottery ball styling with better contrast */
-  .lottery-ball {
-    @apply rounded-full flex items-center justify-center font-bold shadow-md text-lg;
-    /* Increased size for better visibility */
-    min-width: 2.5rem;
-    min-height: 2.5rem;
-  }
-  
-  .lottery-ball-high {
-    @apply bg-[hsl(var(--lotto-authority))] text-white;
-  }
-  
-  .lottery-ball-medium {
-    @apply bg-[hsl(var(--lotto-purple))] text-white;
-  }
-  
-  .lottery-ball-low {
-    @apply bg-[hsl(var(--lotto-blue))] text-white;
-  }
-  
-  /* Simplified Card styling with better borders */
-  .card-premium {
-    @apply border-2 rounded-lg shadow-md bg-card p-6;
-    /* Increased padding for better spacing */
-  }
-  
-  /* Responsive design helpers (Keep) */
-  .mobile-only {
-    @apply block md:hidden;
-  }
-  
-  .desktop-only {
-    @apply hidden md:block;
-  }
-  
-  /* Simplified Heat map styling with better contrast */
-  .heat-map-cold {
-    @apply bg-blue-600 text-white font-medium;
-  }
-  
-  .heat-map-neutral {
-    @apply bg-gray-500 text-white font-medium;
-  }
-  
-  .heat-map-hot {
-    @apply bg-red-600 text-white font-medium;
+    font-family: 'Poppins', sans-serif;
   }
 
-  /* Increase base heading sizes for 40+ audience */
-  h1 {
-    @apply text-4xl font-bold sm:text-5xl leading-tight;
-    margin-bottom: 0.75em;
-  }
-  h2 {
-    @apply text-3xl font-bold sm:text-4xl leading-tight;
-    margin-bottom: 0.5em;
-  }
-  h3 {
-    @apply text-2xl font-bold sm:text-3xl leading-tight;
-    margin-bottom: 0.5em;
-  }
-  h4 {
-    @apply text-xl font-bold sm:text-2xl leading-tight;
-    margin-bottom: 0.5em;
-  }
-  
-  /* Improved paragraph spacing */
-  p {
-    margin-bottom: 1em;
-  }
-  
-  /* Improved button styling for better visibility and touch targets */
-  button, 
-  .btn {
-    @apply rounded-lg px-6 py-3 font-bold text-lg;
-    min-height: 3rem; /* Minimum height for touch targets */
-  }
-  
-  /* Improved form elements for better visibility */
-  input, 
-  select, 
-  textarea {
-    @apply text-lg p-3 rounded-lg border-2;
-    min-height: 3rem; /* Minimum height for touch targets */
-  }
-  
-  /* Improved focus states for accessibility */
-  *:focus {
-    @apply outline-none ring-2 ring-primary;
-  }
-  
-  /* Improved table styling for readability */
-  table {
-    @apply w-full border-collapse;
-  }
-  
-  th {
-    @apply p-4 text-left font-bold bg-secondary text-secondary-foreground;
-  }
-  
-  td {
-    @apply p-4 border-b;
-  }
-  
-  /* Improved link styling for visibility */
-  a {
-    @apply text-primary font-medium;
-    text-decoration: underline;
-  }
-  
-  a:hover {
-    @apply text-primary/80;
-  }
+/* Updated Lottery ball styling based on reference image */
+.lottery-ball-regular {
+  @apply bg-gray-200 text-black border border-gray-400;
+}
+.lottery-ball-special {
+  @apply bg-red-600 text-white border-2 border-red-700;
 }
 
-/* Add Inter font import with more weights for better typography control */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-
-  /* Lottery ball styling based on reference image */
-  .lottery-ball-regular {
-    @apply bg-white text-black border border-gray-300;
-  }
-  .lottery-ball-special {
-    /* Use destructive color for special ball in light theme, similar to reference */
-    @apply bg-[hsl(var(--destructive))] text-destructive-foreground border-2 border-destructive;
-  }
-
-  .dark .lottery-ball-regular {
-    /* Gray background, white text for dark theme */
-    @apply bg-gray-600 text-white border-gray-500;
-  }
-  .dark .lottery-ball-special {
-    /* Red background, white text for dark theme */
-    @apply bg-[hsl(var(--destructive))] text-destructive-foreground border-2 border-destructive;
-  }
-
+.dark .lottery-ball-regular {
+  /* Gray background, white text for dark theme */
+  @apply bg-gray-600 text-white border-gray-500;
+}
+.dark .lottery-ball-special {
+  /* Red background, white text for dark theme */
+  @apply bg-red-600 text-white border-2 border-red-700;
+}
