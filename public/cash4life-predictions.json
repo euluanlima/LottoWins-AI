@@ -1,0 +1,136 @@
+{
+  "hotNumbers": [
+    9,
+    15,
+    27,
+    38,
+    49,
+    3,
+    4,
+    16
+  ],
+  "overdueNumbers": [
+    7,
+    19,
+    31,
+    42,
+    53,
+    2,
+    1,
+    4
+  ],
+  "hotPowerBalls": [
+    3,
+    1,
+    4
+  ],
+  "overduePowerBalls": [
+    2,
+    3,
+    1
+  ],
+  "combinations": [
+    {
+      "numbers": "09-15-27-38-49-03",
+      "confidence": "high"
+    },
+    {
+      "numbers": "04-16-28-39-51-01",
+      "confidence": "high"
+    },
+    {
+      "numbers": "07-19-31-42-53-04",
+      "confidence": "high"
+    },
+    {
+      "numbers": "02-14-26-37-48-02",
+      "confidence": "high"
+    },
+    {
+      "numbers": "10-22-34-45-56-03",
+      "confidence": "high"
+    },
+    {
+      "numbers": "05-17-29-40-52-01",
+      "confidence": "high"
+    },
+    {
+      "numbers": "08-20-32-43-54-04",
+      "confidence": "high"
+    },
+    {
+      "numbers": "03-15-27-38-50-02",
+      "confidence": "high"
+    },
+    {
+      "numbers": "11-23-35-46-57-03",
+      "confidence": "high"
+    },
+    {
+      "numbers": "06-18-30-41-53-01",
+      "confidence": "high"
+    },
+    {
+      "numbers": "09-21-33-44-55-04",
+      "confidence": "high"
+    },
+    {
+      "numbers": "04-16-28-39-51-02",
+      "confidence": "high"
+    },
+    {
+      "numbers": "12-24-36-47-58-03",
+      "confidence": "high"
+    },
+    {
+      "numbers": "07-19-31-42-54-01",
+      "confidence": "high"
+    },
+    {
+      "numbers": "10-22-34-45-56-04",
+      "confidence": "high"
+    },
+    {
+      "numbers": "05-17-29-40-52-02",
+      "confidence": "high"
+    },
+    {
+      "numbers": "08-20-32-43-54-03",
+      "confidence": "high"
+    },
+    {
+      "numbers": "03-15-27-38-50-01",
+      "confidence": "high"
+    },
+    {
+      "numbers": "11-23-35-46-57-04",
+      "confidence": "high"
+    },
+    {
+      "numbers": "06-18-30-41-53-02",
+      "confidence": "high"
+    },
+    {
+      "numbers": "09-21-33-44-55-03",
+      "confidence": "high"
+    },
+    {
+      "numbers": "04-16-28-39-51-01",
+      "confidence": "high"
+    },
+    {
+      "numbers": "12-24-36-47-58-04",
+      "confidence": "high"
+    },
+    {
+      "numbers": "07-19-31-42-54-02",
+      "confidence": "high"
+    },
+    {
+      "numbers": "10-22-34-45-56-03",
+      "confidence": "high"
+    }
+  ],
+  "lastUpdated": "28/04/2025 12:30",
+  "basedOn": 45
+}
