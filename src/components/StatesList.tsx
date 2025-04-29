@@ -62,7 +62,7 @@ const StatesList: React.FC = () => {
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
         {usStates.map((state) => (
           <li key={state.abbr} className="border-b border-[hsl(var(--border))] py-2">
-            <Link href={`/estado/${state.abbr.toLowerCase()}`} className="hover:text-primary transition-colors duration-200 flex items-center">
+            <Link href={`/?estado=${state.abbr.toLowerCase()}`} className="hover:text-primary transition-colors duration-200 flex items-center">
               <span className="font-bold w-10">{state.abbr}</span>
               <span>{state.name}</span>
             </Link>

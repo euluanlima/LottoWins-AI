@@ -36,11 +36,28 @@ const availableLotteries: LotteryInfo[] = [
 
 // New Home Page Component for Lottery Selection
 export default function LotterySelectionPage() {
+  const searchParams = useSearchParams();
+  const selectedStateAbbr = searchParams.get("estado");
+
+  // Find the full state name (optional, but good for display)
+  const currentState = selectedStateAbbr 
+    ? usStates.find(state => state.abbr.toLowerCase() === selectedStateAbbr.toLowerCase())
+    : null;
+
+  const pageTitle = currentState 
+    ? `Loterias da ${currentState.name}` 
+    : "Lotto Wins AI";
+  const pageSubtitle = currentState 
+    ? `Resultados e previsões para ${currentState.name}`
+    : "Selecione a loteria para ver previsões e resultados:";
+
+  // TODO: Filter availableLotteries based on selectedStateAbbr if needed
+
   return (
     <div className="flex flex-col w-full p-4 sm:p-6">
       <div className="text-center mb-8 border-b border-[hsl(var(--border))] pb-4">
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Lotto Wins AI</h1>
-        <p className="text-lg sm:text-xl text-muted-foreground">Selecione a loteria para ver previsões e resultados:</p>
+        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">{pageTitle}</h1>
+        <p className="text-lg sm:text-xl text-muted-foreground">{pageSubtitle}</p>
       </div>
 
       {/* Lottery Cards - Updated to match LotteryUSA style */}
@@ -88,3 +105,5 @@ export default function LotterySelectionPage() {
     </div>
   );
 }
+
+import { useSearchParams } from 'next/navigation';
