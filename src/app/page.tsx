@@ -1,17 +1,17 @@
 
 'use client';
 
-import React, { Suspense } from 'react'; // Import Suspense
+import React, { useState, useEffect } from 'react'; // Import useState and useEffect
 import Link from 'next/link';
 import Image from 'next/image';
 import StatesList from '@/components/StatesList';
-import { useSearchParams } from 'next/navigation'; // Import useSearchParams
+// No longer importing useSearchParams or Suspense here
 
 // Define the available lotteries
 interface LotteryInfo {
-  id: string; // e.g., 'mega-millions'
-  name: string; // e.g., 'Mega Millions'
-  logoPath: string; // Path to the logo image
+  id: string;
+  name: string;
+  logoPath: string;
   description: string;
 }
 
@@ -33,10 +33,9 @@ const availableLotteries: LotteryInfo[] = [
     logoPath: '/logos/cash4life-logo.svg',
     description: 'Ganhe $1.000 por dia pelo resto da vida!'
   },
-  // Add more lotteries here in the future
 ];
 
-// Define usStates here (copied from StatesList for lookup)
+// Define usStates here
 const usStates = [
   { name: 'Alabama', abbr: 'AL' }, { name: 'Alaska', abbr: 'AK' }, { name: 'Arizona', abbr: 'AZ' }, 
   { name: 'Arkansas', abbr: 'AR' }, { name: 'California', abbr: 'CA' }, { name: 'Colorado', abbr: 'CO' },
@@ -57,24 +56,27 @@ const usStates = [
   { name: 'West Virginia', abbr: 'WV' }, { name: 'Wisconsin', abbr: 'WI' }, { name: 'Wyoming', abbr: 'WY' },
 ];
 
-// Component that uses useSearchParams and renders the page content
-function PageContent() {
-  const searchParams = useSearchParams();
-  const selectedStateAbbr = searchParams.get("estado");
+// Main Page Component using client-side state update
+export default function LotterySelectionPage() {
+  const [pageTitle, setPageTitle] = useState("Lotto Wins AI");
+  const [pageSubtitle, setPageSubtitle] = useState("Selecione a loteria para ver previsões e resultados:");
 
-  // Find the full state name
-  const currentState = selectedStateAbbr 
-    ? usStates.find(state => state.abbr.toLowerCase() === selectedStateAbbr.toLowerCase())
-    : null;
+  useEffect(() => {
+    // This code runs only on the client, after the initial render
+    const params = new URLSearchParams(window.location.search);
+    const selectedStateAbbr = params.get("estado");
 
-  const pageTitle = currentState 
-    ? `Loterias da ${currentState.name}` 
-    : "Lotto Wins AI";
-  const pageSubtitle = currentState 
-    ? `Resultados e previsões para ${currentState.name}`
-    : "Selecione a loteria para ver previsões e resultados:";
+    if (selectedStateAbbr) {
+      const currentState = usStates.find(state => state.abbr.toLowerCase() === selectedStateAbbr.toLowerCase());
+      if (currentState) {
+        setPageTitle(`Loterias da ${currentState.name}`);
+        setPageSubtitle(`Resultados e previsões para ${currentState.name}`);
+      }
+    }
+    // No dependency array means this runs once after mount
+  }, []); 
 
-  // TODO: Filter availableLotteries based on selectedStateAbbr if needed
+  // TODO: Filter availableLotteries based on selectedStateAbbr if needed (would also need state)
 
   return (
     <div className="flex flex-col w-full p-4 sm:p-6">
@@ -125,16 +127,6 @@ function PageContent() {
         </p>
       </div>
     </div>
-  );
-}
-
-// Main Page Component wrapping PageContent with Suspense
-export default function LotterySelectionPage() {
-  return (
-    // Wrap the component that uses useSearchParams with Suspense
-    <Suspense fallback={<div className='text-center p-10'>Carregando estado...</div>}> 
-      <PageContent />
-    </Suspense>
   );
 }
 
