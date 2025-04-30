@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Theme Variables */
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --border: #e0e0e0;
+    --primary: #6366f1; /* Highlight color from reference */
+    --primary-foreground: #ffffff;
+    --text: #0a0a0a;
+    --muted: #666666;
+    --highlight: #00ffe0; /* Primary color from reference */
+
+    /* Heatmap colors (Light) */
+    --hot: #ff4d4f;
+    --hot-text: #ffffff;
+    --neutral: #facc15;
+    --neutral-text: #111111;
+    --cold: #3b82f6;
+    --cold-text: #ffffff;
+    --default-ball-bg: #e0e0e0; /* Lighter default for light theme */
+    --default-ball-text: #333333;
+
+    /* Combo Card (Light) */
+    --combo-card-bg: #f0f0f0;
+    --combo-card-border: #d1d1d1;
+    --combo-card-text: #111111;
+    --combo-confidence-bg: #e0e0e0;
+
+    --radius: 16px;
+
+    /* --- Tailwind Mapping (Light) --- */
+    --background: 0 0% 96%;
+    --foreground: 0 0% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 4%;
+    --primary: 240 90% 65%; /* --highlight */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 64%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 173 100% 50%; /* --primary */
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 240 90% 65%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    /* Dark Theme Variables (From reference HTML) */
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --card: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.05);
+    --primary: #00ffe0;
+    --primary-foreground: #000000;
+    --text: #f5f5f5;
+    --muted: #999;
+    --highlight: #6366f1;
+
+    /* Heatmap colors (Dark) */
+    --hot: #ff4d4f;
+    --hot-text: #ffffff;
+    --neutral: #facc15;
+    --neutral-text: #111111;
+    --cold: #3b82f6;
+    --cold-text: #ffffff;
+    --default-ball-bg: #1e1e1e;
+    --default-ball-text: var(--text);
+
+    /* Combo Card (Dark) */
+    --combo-card-bg: #1a1a1a;
+    --combo-card-border: #222;
+    --combo-card-text: var(--text);
+    --combo-confidence-bg: #1f1f1f;
+
+    --radius: 16px;
+
+    /* --- Tailwind Mapping (Dark) --- */
+    --background: 0 0% 4%;
+    --foreground: 0 0% 96%;
+    --card: 0 0% 100% / 0.03;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 240 90% 65%; /* --highlight */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 60%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 173 100% 50%; /* --primary */
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 63% 94%;
+    --destructive-foreground: 0 86% 97%;
+    --border: 0 0% 100% / 0.05;
+    --input: 0 0% 100% / 0.05;
+    --ring: 240 90% 65%;
+    --radius: 1rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Manrope', sans-serif;
+    /* Padding removed from body, applied in layout.tsx */
+  }
+}
+
+
+
+/* Add animations from the loading screen reference */
+@layer utilities {
+  @keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  .animate-pulseGlow {
+    animation: pulseGlow 2s infinite ease-in-out;
+  }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadein {
+    animation: fadein 0.5s ease forwards; /* Adjusted duration slightly */
+  }
+}
+

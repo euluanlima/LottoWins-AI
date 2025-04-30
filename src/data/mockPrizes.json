@@ -1,0 +1,48 @@
+{
+  "powerball": {
+    "name": "Powerball Prizes",
+    "prizes": [
+      { "match": "5 + PB", "prize": "Grand Prize (Jackpot)", "odds": "1 in 292,201,338" },
+      { "match": "5", "prize": "$1,000,000", "odds": "1 in 11,688,054" },
+      { "match": "4 + PB", "prize": "$50,000", "odds": "1 in 913,129" },
+      { "match": "4", "prize": "$100", "odds": "1 in 36,525" },
+      { "match": "3 + PB", "prize": "$100", "odds": "1 in 14,494" },
+      { "match": "3", "prize": "$7", "odds": "1 in 580" },
+      { "match": "2 + PB", "prize": "$7", "odds": "1 in 701" },
+      { "match": "1 + PB", "prize": "$4", "odds": "1 in 92" },
+      { "match": "PB Only", "prize": "$4", "odds": "1 in 38" }
+    ],
+    "powerPlayNote": "Power Play® multiplies non-jackpot prizes by 2, 3, 4, 5, or 10 (10x available when jackpot is $150 million or less). Match 5 prize with Power Play is always $2,000,000."
+  },
+  "mega-millions": {
+    "name": "Mega Millions Prizes",
+    "prizes": [
+      { "match": "5 + MB", "prize": "Grand Prize (Jackpot)", "odds": "1 in 302,575,350" },
+      { "match": "5", "prize": "$1,000,000", "odds": "1 in 12,607,306" },
+      { "match": "4 + MB", "prize": "$10,000", "odds": "1 in 931,001" },
+      { "match": "4", "prize": "$500", "odds": "1 in 38,792" },
+      { "match": "3 + MB", "prize": "$200", "odds": "1 in 14,547" },
+      { "match": "3", "prize": "$10", "odds": "1 in 606" },
+      { "match": "2 + MB", "prize": "$10", "odds": "1 in 693" },
+      { "match": "1 + MB", "prize": "$4", "odds": "1 in 89" },
+      { "match": "MB Only", "prize": "$2", "odds": "1 in 37" }
+    ],
+    "megaplierNote": "Megaplier® multiplies non-jackpot prizes by 2, 3, 4, or 5. Add Megaplier for $1 extra per play."
+  },
+  "cash4life": {
+    "name": "Cash4Life Prizes",
+    "prizes": [
+      { "match": "5 + CB", "prize": "$1,000 a DAY for LIFE", "odds": "1 in 21,846,048" },
+      { "match": "5", "prize": "$1,000 a WEEK for LIFE", "odds": "1 in 7,282,016" },
+      { "match": "4 + CB", "prize": "$2,500", "odds": "1 in 79,440" },
+      { "match": "4", "prize": "$500", "odds": "1 in 26,480" },
+      { "match": "3 + CB", "prize": "$100", "odds": "1 in 1,471" },
+      { "match": "3", "prize": "$25", "odds": "1 in 490" },
+      { "match": "2 + CB", "prize": "$10", "odds": "1 in 83" },
+      { "match": "2", "prize": "$4", "odds": "1 in 28" },
+      { "match": "1 + CB", "prize": "$2", "odds": "1 in 13" }
+    ],
+    "cashBallNote": "Cash Ball (CB) is drawn from a separate pool of numbers."
+  }
+}
+

@@ -1,0 +1,63 @@
+{
+  "powerball": [
+    {
+      "drawDate": "2025-04-30",
+      "winningNumbers": ["10", "22", "35", "48", "61"],
+      "powerball": "15",
+      "jackpot": "$150 Milhões"
+    },
+    {
+      "drawDate": "2025-04-28",
+      "winningNumbers": ["05", "12", "20", "33", "50"],
+      "powerball": "02",
+      "jackpot": "$135 Milhões"
+    },
+    {
+      "drawDate": "2025-04-26",
+      "winningNumbers": ["18", "29", "31", "44", "59"],
+      "powerball": "21",
+      "jackpot": "$120 Milhões"
+    }
+  ],
+  "mega-millions": [
+    {
+      "drawDate": "2025-04-29",
+      "winningNumbers": ["03", "11", "25", "40", "68"],
+      "megaBall": "10",
+      "jackpot": "$200 Milhões"
+    },
+    {
+      "drawDate": "2025-04-25",
+      "winningNumbers": ["07", "19", "28", "47", "55"],
+      "megaBall": "05",
+      "jackpot": "$180 Milhões"
+    },
+    {
+      "drawDate": "2025-04-22",
+      "winningNumbers": ["15", "21", "33", "41", "50"],
+      "megaBall": "14",
+      "jackpot": "$165 Milhões"
+    }
+  ],
+  "cash4life": [
+    {
+      "drawDate": "2025-04-30",
+      "winningNumbers": ["02", "14", "23", "38", "45"],
+      "cashBall": "03",
+      "topPrize": "$1.000/Dia por Vida"
+    },
+    {
+      "drawDate": "2025-04-29",
+      "winningNumbers": ["09", "17", "29", "41", "58"],
+      "cashBall": "01",
+      "topPrize": "$1.000/Dia por Vida"
+    },
+    {
+      "drawDate": "2025-04-28",
+      "winningNumbers": ["05", "11", "22", "30", "49"],
+      "cashBall": "04",
+      "topPrize": "$1.000/Dia por Vida"
+    }
+  ]
+}
+
