@@ -1,0 +1,14 @@
+Cash4Life Hot/Cold Number Analysis
+==================================
+
+Top 5 Hot Main Numbers (Most Frequent):
+1, 3, 2, 5, 4
+
+Bottom 5 Cold Main Numbers (Least Frequent):
+4, 6, 8, 7, 9
+
+Top 2 Hot Cash Ball Numbers (Most Frequent):
+3, 1
+
+Bottom 2 Cold Cash Ball Numbers (Least Frequent):
+2, 4

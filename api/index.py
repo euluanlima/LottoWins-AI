@@ -7,18 +7,17 @@ import pandas as pd
 from flask import Flask, jsonify, render_template, request, abort
 
 # Import the prediction function directly
-from .lotto_predictor import generate_prediction_data
+# Use direct import as both files are in the same 'api' directory
+from lotto_predictor import generate_prediction_data
 
-# Get the absolute path of the directory where this script is located
+# Get the absolute path of the directory where this script is located (api)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Define the path to the public folder relative to BASE_DIR (../public)
-PUBLIC_FOLDER = os.path.join(BASE_DIR, '..', 'public')
-# Define the path to the data folder relative to BASE_DIR (../data)
-DATA_FOLDER = os.path.join(BASE_DIR, '..', 'data')
+# PUBLIC_FOLDER = os.path.join(BASE_DIR, '..', 'public') # Not needed if Vercel handles public
+# Define the path to the data folder relative to BASE_DIR (now inside api)
+DATA_FOLDER = os.path.join(BASE_DIR, 'data')
 
-# Initialize Flask app. Vercel handles static files from the 'public' directory defined in vercel.json.
-# We don't need to specify static_folder here if Vercel's routing handles it.
-# Let's remove static_folder and static_url_path for simplicity with Vercel.
+# Initialize Flask app.
 app = Flask(__name__)
 
 # --- Configuration ---
@@ -34,7 +33,7 @@ def parse_hot_cold_file(game_name):
         "cold_special": []
     }
     try:
-        # Construct path relative to the DATA_FOLDER
+        # Construct path relative to the DATA_FOLDER (now inside api)
         file_path = os.path.join(DATA_FOLDER, f"{game_name.lower().replace(' ', '_')}_hot_cold_analysis.txt")
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
@@ -62,17 +61,13 @@ def parse_hot_cold_file(game_name):
     return analysis
 
 # --- Routes ---
-# Root route is likely handled by Vercel serving public/index.html, so we remove it from Flask.
-# @app.route("/")
-# def index():
-#     pass
 
 # Route for API prediction
 @app.route("/predict/<string:game_name>", methods=["GET"])
 def get_prediction(game_name):
     """Endpoint to get prediction and analysis for a specific game."""
     if game_name not in AVAILABLE_GAMES:
-        return jsonify({"error": f"Game '{game_name}' not available or not supported."}), 404
+        return jsonify({"error": f"Game \'{game_name}\' not available or not supported."}), 404
 
     try:
         # Call the imported function directly
@@ -88,7 +83,7 @@ def get_prediction(game_name):
 
         # Combine prediction and analysis
         response_data = {
-            "prediction": prediction_result, # The function now returns the prediction dict directly
+            "prediction": prediction_result,
             "analysis": analysis_data
         }
         return jsonify(response_data)
@@ -117,14 +112,14 @@ def check_ticket():
         return jsonify({"error": "Missing required fields: game, date, numbers."}), 400
 
     if game_name not in AVAILABLE_GAMES:
-        return jsonify({"error": f"Game '{game_name}' not supported for checking."}), 400
+        return jsonify({"error": f"Game \'{game_name}\' not supported for checking."}), 400
 
     try:
         user_main_numbers = set(int(n.strip()) for n in ticket_numbers_str.split() if n.strip().isdigit())
         user_special_number = int(special_number_str.strip()) if special_number_str.strip().isdigit() else None
         user_draw_date = pd.to_datetime(draw_date_str).strftime("%Y-%m-%d")
 
-        # Construct path relative to the DATA_FOLDER
+        # Construct path relative to the DATA_FOLDER (now inside api)
         csv_file = os.path.join(DATA_FOLDER, f"{game_name.lower().replace(' ', '_')}_processed_camelot.csv")
         df = pd.read_csv(csv_file)
 

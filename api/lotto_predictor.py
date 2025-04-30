@@ -8,10 +8,10 @@ import os
 from collections import Counter
 from io import StringIO
 
-# Get the absolute path of the directory where this script is located
+# Get the absolute path of the directory where this script is located (api)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-# Define the path to the data folder relative to SCRIPT_DIR (../data)
-DATA_FOLDER = os.path.join(SCRIPT_DIR, '..', 'data')
+# Define the path to the data folder relative to SCRIPT_DIR (now inside api)
+DATA_FOLDER = os.path.join(SCRIPT_DIR, 'data')
 
 def read_frequency_data(freq_file):
     """Reads the combined frequency CSV and separates main and special ball data."""
@@ -104,7 +104,7 @@ def read_frequency_data(freq_file):
 def predict_numbers(game, num_main, num_special):
     """Predicts lottery numbers based on frequency analysis."""
     game_file_part = game.lower().replace(" ", "_")
-    # Construct path relative to the DATA_FOLDER
+    # Construct path relative to the DATA_FOLDER (now inside api)
     freq_file = os.path.join(DATA_FOLDER, f"{game_file_part}_frequency_analysis.csv")
     main_freq, special_freq = read_frequency_data(freq_file)
 
@@ -206,7 +206,7 @@ def generate_prediction_data(game_name):
         result = {
             "game": game_name,
             "predicted_main": main_prediction,
-            f"predicted_{special_ball_name.lower().replace(' ', '_')}": special_prediction
+            f"predicted_{special_ball_name.lower().replace(\' \".replace(" ", "_")}": special_prediction
         }
         return result
     else:
