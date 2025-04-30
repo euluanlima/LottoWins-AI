@@ -3,8 +3,8 @@ import pandas as pd
 import random
 import sys
 import json
-import argparse # Import argparse
-import os # Import os module
+# import argparse # No longer needed for direct function call
+import os
 from collections import Counter
 from io import StringIO
 
@@ -111,7 +111,7 @@ def predict_numbers(game, num_main, num_special):
     # Handle potential empty dataframes returned by read_frequency_data
     if main_freq is None or special_freq is None or main_freq.empty:
         # print(f"Frequency data incomplete or missing for {game}. Cannot predict.", file=sys.stderr)
-        return None, None
+        return None, None # Return None to indicate failure
 
     # Determine special ball column name from the dataframe
     special_col_name = None
@@ -149,8 +149,11 @@ def predict_numbers(game, num_main, num_special):
              else:
                  # Normalize again just in case of floating point issues
                  current_sum = sum(temp_available_weights)
-                 normalized_weights = [w / current_sum for w in temp_available_weights]
-                 chosen_num = random.choices(temp_available_main, weights=normalized_weights, k=1)[0]
+                 if current_sum <= 0: # Avoid division by zero
+                     chosen_num = random.choice(temp_available_main)
+                 else:
+                     normalized_weights = [w / current_sum for w in temp_available_weights]
+                     chosen_num = random.choices(temp_available_main, weights=normalized_weights, k=1)[0]
 
              predicted_main.append(chosen_num)
              idx = temp_available_main.index(chosen_num)
@@ -166,19 +169,17 @@ def predict_numbers(game, num_main, num_special):
         special_weights = special_freq["Frequency"]
         if not special_numbers.empty:
             special_weights_norm = (special_weights + 1) / (special_weights + 1).sum()
-            predicted_special = random.choices(special_numbers.tolist(), weights=special_weights_norm.tolist(), k=1)[0]
+            if special_weights_norm.sum() > 0:
+                predicted_special = random.choices(special_numbers.tolist(), weights=special_weights_norm.tolist(), k=1)[0]
+            # else: print(f"Warning: Sum of special weights is zero for {game}. Cannot predict special.", file=sys.stderr)
         # else: print(f"Warning: No special numbers found for {game} after processing.", file=sys.stderr)
     # else: print(f"Warning: Could not determine or find special ball data for {game}.", file=sys.stderr)
 
-
     return predicted_main, predicted_special
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Predict lottery numbers based on frequency analysis.")
-    parser.add_argument("game", help="The name of the lottery game (e.g., Powerball, Cash4Life, 'Mega Millions')")
-    args = parser.parse_args()
-
-    game_name = args.game
+# New function to be called by index.py
+def generate_prediction_data(game_name):
+    """Generates the prediction dictionary for a given game name."""
     num_main_balls = 0
     num_special_balls = 0
     special_ball_name = "Special"
@@ -196,8 +197,8 @@ if __name__ == "__main__":
         num_special_balls = 1
         special_ball_name = "Mega Ball"
     else:
-        print(json.dumps({"error": f"Unknown game: {game_name}"}), file=sys.stderr)
-        sys.exit(1)
+        # Return an error dictionary if the game is unknown
+        return {"error": f"Unknown game: {game_name}"}
 
     main_prediction, special_prediction = predict_numbers(game_name, num_main_balls, num_special_balls)
 
@@ -207,9 +208,11 @@ if __name__ == "__main__":
             "predicted_main": main_prediction,
             f"predicted_{special_ball_name.lower().replace(' ', '_')}": special_prediction
         }
-        print(json.dumps(result))
+        return result
     else:
-        # Output error as JSON to stderr if prediction fails
-        print(json.dumps({"error": f"Prediction failed for {game_name}. Insufficient data?"}), file=sys.stderr)
-        sys.exit(1)
+        # Return an error dictionary if prediction fails
+        return {"error": f"Prediction failed for {game_name}. Insufficient data?"}
+
+# Remove the if __name__ == "__main__": block
+# The script will now only define functions to be imported elsewhere
 

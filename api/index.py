@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-import subprocess
+# Removed subprocess import
 import json
 import re
 import os
 import pandas as pd
 from flask import Flask, jsonify, render_template, request, abort
+
+# Import the prediction function directly
+from lotto_predictor import generate_prediction_data
 
 # Get the absolute path of the directory where this script is located
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -13,8 +16,10 @@ PUBLIC_FOLDER = os.path.join(BASE_DIR, '..', 'public')
 # Define the path to the data folder relative to BASE_DIR (../data)
 DATA_FOLDER = os.path.join(BASE_DIR, '..', 'data')
 
-# Initialize Flask app, pointing static folder to the new 'public' directory
-app = Flask(__name__, static_folder=PUBLIC_FOLDER, static_url_path='/static')
+# Initialize Flask app. Vercel handles static files from the 'public' directory defined in vercel.json.
+# We don't need to specify static_folder here if Vercel's routing handles it.
+# Let's remove static_folder and static_url_path for simplicity with Vercel.
+app = Flask(__name__)
 
 # --- Configuration ---
 AVAILABLE_GAMES = ["Powerball", "Mega Millions", "Cash4Life"]
@@ -57,80 +62,43 @@ def parse_hot_cold_file(game_name):
     return analysis
 
 # --- Routes ---
-# Route for serving the main HTML page (now from public folder)
-@app.route("/")
-def index():
-    """Serves the main HTML page."""
-    # Render the index.html from the 'public' folder (Flask automatically looks here due to static_folder setting)
-    # However, for the root route, we usually render a template. Let's assume index.html is treated as a template.
-    # If index.html is purely static, Vercel's routing might handle it directly.
-    # For Flask to serve it from the root, we might need to adjust Vercel routes or serve it explicitly.
-    # Let's keep render_template for now, assuming it's in a templates folder *inside* public, or adjust later.
-    # For Vercel deployment, it's often better to let Vercel handle static file serving.
-    # Let's adjust Flask to NOT serve static files from root, Vercel will handle it.
-    # We only need Flask for API routes.
-    # So, we remove the render_template call here.
-    # Vercel will serve public/index.html for the root path.
-    # We need to adjust vercel.json if this is the case.
-    # Let's revert for now and assume Flask serves index.html from a 'templates' folder *within* 'public'
-    # This requires moving index.html to public/templates/index.html
-    # Let's simplify: Assume index.html is in 'public' and Flask serves API endpoints only.
-    # The root route in Flask might not be needed if Vercel serves public/index.html directly.
-    # Let's comment out the root route for now and rely on Vercel's static serving.
-    # return render_template("index.html") # Assuming index.html is in a 'templates' folder
-    pass # Or return a simple API confirmation
+# Root route is likely handled by Vercel serving public/index.html, so we remove it from Flask.
+# @app.route("/")
+# def index():
+#     pass
 
 # Route for API prediction
 @app.route("/predict/<string:game_name>", methods=["GET"])
 def get_prediction(game_name):
     """Endpoint to get prediction and analysis for a specific game."""
     if game_name not in AVAILABLE_GAMES:
-        abort(404, description=f"Game '{game_name}' not available or not supported.")
-
-    prediction_data = {}
-    error_occurred = False
-    error_message = "Prediction failed."
+        return jsonify({"error": f"Game '{game_name}' not available or not supported."}), 404
 
     try:
-        # Construct path to the predictor script within the api directory
-        predictor_script_path = os.path.join(BASE_DIR, "lotto_predictor.py")
-        result = subprocess.run(
-            ["python3", predictor_script_path, game_name],
-            capture_output=True,
-            text=True,
-            check=True,
-            cwd=BASE_DIR # Ensure the script runs with the api directory as cwd
-        )
-        try:
-            prediction_data = json.loads(result.stdout)
-        except json.JSONDecodeError:
-            error_occurred = True
-            error_message = "Failed to decode prediction script output."
-            print(f"JSONDecodeError: Output was: {result.stdout}")
+        # Call the imported function directly
+        prediction_result = generate_prediction_data(game_name)
 
-    except subprocess.CalledProcessError as e:
-        error_occurred = True
-        error_message = f"Prediction script failed: {e}"
-        print(f"CalledProcessError: {e}")
-        print(f"Stderr: {e.stderr}")
-    except FileNotFoundError:
-        error_occurred = True
-        error_message = f"Prediction script not found at {predictor_script_path}."
-        print(f"FileNotFoundError: {predictor_script_path} not found")
-    except Exception as e:
-        error_occurred = True
-        error_message = f"An unexpected error occurred: {e}"
-        print(f"Unexpected Error: {e}")
+        # Check if the function returned an error dictionary
+        if "error" in prediction_result:
+            print(f"Prediction function error for {game_name}: {prediction_result['error']}")
+            return jsonify({"error": prediction_result["error"]}), 500
 
-    if error_occurred:
-        return jsonify({"error": error_message}), 500
-    else:
+        # Get hot/cold analysis
         analysis_data = parse_hot_cold_file(game_name)
+
+        # Combine prediction and analysis
         response_data = {
-            "prediction": prediction_data.get("prediction", {}),
+            "prediction": prediction_result, # The function now returns the prediction dict directly
             "analysis": analysis_data
         }
         return jsonify(response_data)
+
+    except Exception as e:
+        # Catch any unexpected errors during the process
+        print(f"Unexpected Error in /predict/{game_name}: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": f"An unexpected error occurred while generating prediction for {game_name}."}), 500
 
 # Route for API ticket checking
 @app.route("/check_ticket", methods=["POST"])
@@ -138,7 +106,7 @@ def check_ticket():
     """Endpoint to check user ticket against historical data."""
     data = request.get_json()
     if not data:
-        abort(400, description="Invalid request data.")
+        return jsonify({"error": "Invalid request data."}), 400
 
     game_name = data.get("game")
     draw_date_str = data.get("date")
@@ -146,10 +114,10 @@ def check_ticket():
     special_number_str = data.get("special", "")
 
     if not all([game_name, draw_date_str, ticket_numbers_str]):
-        abort(400, description="Missing required fields: game, date, numbers.")
+        return jsonify({"error": "Missing required fields: game, date, numbers."}), 400
 
     if game_name not in AVAILABLE_GAMES:
-        abort(400, description=f"Game '{game_name}' not supported for checking.")
+        return jsonify({"error": f"Game '{game_name}' not supported for checking."}), 400
 
     try:
         user_main_numbers = set(int(n.strip()) for n in ticket_numbers_str.split() if n.strip().isdigit())
@@ -216,7 +184,7 @@ def check_ticket():
     except FileNotFoundError:
         return jsonify({"error": f"Arquivo histórico para {game_name} não encontrado em {csv_file}."}), 500
     except ValueError:
-        abort(400, description="Formato inválido para números ou data. Verifique os dados inseridos.")
+        return jsonify({"error": "Formato inválido para números ou data. Verifique os dados inseridos."}), 400
     except Exception as e:
         print(f"Error checking ticket: {e}")
         import traceback
