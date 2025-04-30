@@ -6,15 +6,22 @@
       "use": "@vercel/python"
     },
     {
-      "src": "public/**",
+      "src": "public/static/**", // Point build to the actual static files
       "use": "@vercel/static"
     }
   ],
   "routes": [
+    // Serve static files from the /static URL path, mapping to the public/static directory
     {
       "src": "/static/(.*)",
-      "dest": "/public/$1"
+      "dest": "/public/static/$1"
     },
+    // Serve the index.html file for the root path
+    {
+      "src": "/",
+      "dest": "/public/static/index.html"
+    },
+    // Handle all other routes (API calls) with the Python function
     {
       "src": "/(.*)",
       "dest": "api/index.py"
