@@ -1,0 +1,14 @@
+Mega Millions Hot/Cold Number Analysis
+====================================
+
+Top 5 Hot Main Numbers (Most Frequent):
+3, 7, 5, 8, 2
+
+Bottom 5 Cold Main Numbers (Least Frequent):
+2, 4, 6, 1, 9
+
+Top 3 Hot Mega Ball Numbers (Most Frequent):
+1, 4, 7
+
+Bottom 3 Cold Mega Ball Numbers (Least Frequent):
+9, 8, 2
