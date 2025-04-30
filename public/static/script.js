@@ -1,37 +1,37 @@
 document.addEventListener("DOMContentLoaded", () => {
     // --- Views ---
-    const lotterySelectionView = document.getElementById("lottery-selection");
-    const dashboardView = document.getElementById("dashboard-view"); // Updated ID
-    const backButton = document.getElementById("back-to-selection");
-    const dashboardTitle = document.getElementById("dashboard-title"); // Updated ID
-    const dashboardGameLogo = document.getElementById("dashboard-game-logo"); // New element
+    const lotterySelectionView = document.getElementById("lottery-selection-premium");
+    const dashboardView = document.getElementById("dashboard-view-premium"); // Updated ID
+    const backButton = document.getElementById("back-to-selection-premium");
+    const dashboardTitle = document.getElementById("dashboard-title-premium"); // Updated ID
+    const dashboardGameLogo = document.getElementById("dashboard-game-logo-premium"); // New element
 
     // --- Current Game State ---
     let currentGame = null;
 
     // --- Prediction Elements ---
-    const predictButton = document.getElementById("predict-button");
-    const predictionTablePlaceholder = document.getElementById("prediction-table-placeholder"); // Updated ID
-    const smartPickAnalysisDiv = document.getElementById("smart-pick-analysis"); // Updated ID
-    const loadingIndicator = document.getElementById("loading");
-    const errorMessageDiv = document.getElementById("error-message");
-    const hotNumbersSpan = document.getElementById("hot-numbers");
-    const coldNumbersSpan = document.getElementById("cold-numbers");
-    const hotSpecialSpan = document.getElementById("hot-special");
-    const coldSpecialSpan = document.getElementById("cold-special");
+    const predictButton = document.getElementById("predict-button-premium");
+    const predictionTablePlaceholder = document.getElementById("prediction-table-placeholder-premium"); // Updated ID
+    const smartPickAnalysisDiv = document.getElementById("smart-pick-analysis-premium"); // Updated ID
+    const loadingIndicator = document.getElementById("loading-premium");
+    const errorMessageDiv = document.getElementById("error-message-premium");
+    const hotNumbersSpan = document.getElementById("hot-numbers-premium");
+    const coldNumbersSpan = document.getElementById("cold-numbers-premium");
+    const hotSpecialSpan = document.getElementById("hot-special-premium");
+    const coldSpecialSpan = document.getElementById("cold-special-premium");
 
     // --- Ticket Checker Elements ---
-    const ticketNumbersInput = document.getElementById("ticket-numbers");
-    const specialNumberInput = document.getElementById("special-number");
-    const drawDateInput = document.getElementById("draw-date");
-    const checkTicketButton = document.getElementById("check-ticket-button");
-    const checkerResultDiv = document.getElementById("checker-result");
+    const ticketNumbersInput = document.getElementById("ticket-numbers-premium");
+    const specialNumberInput = document.getElementById("special-number-premium");
+    const drawDateInput = document.getElementById("draw-date-premium");
+    const checkTicketButton = document.getElementById("check-ticket-button-premium");
+    const checkerResultDiv = document.getElementById("checker-result-premium");
 
     // --- Reminder Elements ---
     const reminderToggles = {
-        "Powerball": document.getElementById("powerball-reminder"),
-        "Mega Millions": document.getElementById("megamillions-reminder"),
-        "Cash4Life": document.getElementById("cash4life-reminder")
+        "Powerball": document.getElementById("powerball-reminder-premium"),
+        "Mega Millions": document.getElementById("megamillions-reminder-premium"),
+        "Cash4Life": document.getElementById("cash4life-reminder-premium")
     };
     // We might not need to hide/show individual toggles if they are all in the dashboard
     // const reminderSections = document.querySelectorAll(".notification-toggle[data-game-toggle]");
@@ -70,8 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Add event listeners to lottery card buttons (Updated selector)
-    document.querySelectorAll(".lottery-card .select-button").forEach(button => {
-        const card = button.closest(".lottery-card");
+    document.querySelectorAll(".lottery-card-premium .select-button-premium").forEach(button => {
+        const card = button.closest(".lottery-card-premium");
         button.addEventListener("click", () => {
             const gameName = card.getAttribute("data-game");
             if (gameName) {

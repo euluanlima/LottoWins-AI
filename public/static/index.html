@@ -3,144 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LottoWins AI</title>
-    <link rel="stylesheet" href="/static/style.css"> <!-- Link to the CSS file we will create -->
-    <!-- Placeholder for potential Google Fonts -->
+    <title>LottoWins AI - Premium</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Consider adding a premium font from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="app-header">
-        <div class="logo-container">
-            <!-- Placeholder for Lotto Cash logo -->
-            <img src="/static/images/lotto-cash-logo-placeholder.png" alt="Lotto Cash Logo" id="app-logo" style="height: 40px; /* Adjust as needed */">
+
+    <header class="app-header-premium">
+        <div class="logo-container-premium">
+            <!-- Placeholder for Lotto Cash Logo -->
+            <img src="/static/images/lotto-cash-logo-placeholder.png" alt="Lotto Cash Logo" id="app-logo">
+            <span>LottoWins AI</span>
         </div>
-        <nav class="main-nav">
-            <!-- Basic Menu Placeholder -->
-            <button id="menu-button" aria-label="Menu">&#9776;</button>
+        <nav class="main-nav-premium">
+            <!-- Navigation items can be added here if needed -->
+            <button id="menu-toggle-premium" aria-label="Toggle Menu">☰</button>
         </nav>
     </header>
 
-    <main id="main-content">
-        <!-- Lottery Selection View (Initially Visible) -->
-        <section id="lottery-selection" class="view active-view">
-            <h1 class="view-title">Escolha sua Loteria</h1>
-            <p class="view-subtitle">Selecione um jogo para acessar o dashboard com previsões e ferramentas.</p>
-            <div class="lottery-cards-container">
-                <div class="lottery-card" data-game="Powerball">
-                    <img src="/static/images/powerball-logo-placeholder.png" alt="Powerball Logo" class="lottery-logo-small">
+    <main id="main-content-premium">
+
+        <!-- Lottery Selection View -->
+        <section id="lottery-selection-premium" class="view active-view">
+            <h1 class="view-title-premium">Selecione a Loteria</h1>
+            <p class="view-subtitle-premium">Escolha um jogo para acessar análises detalhadas e previsões inteligentes.</p>
+            <div class="lottery-cards-container-premium">
+                <!-- Powerball Card -->
+                <div class="lottery-card-premium" data-game="Powerball">
+                    <img src="/static/images/powerball-logo-placeholder.png" alt="Powerball Logo" class="lottery-logo-premium">
                     <h3>Powerball</h3>
-                    <p>Grandes prêmios, sorteios frequentes.</p>
-                    <button class="button select-button">Acessar Dashboard</button>
+                    <p>Jackpots massivos e sorteios frequentes.</p>
+                    <button class="button-premium select-button-premium">Acessar Dashboard</button>
                 </div>
-                <div class="lottery-card" data-game="Mega Millions">
-                    <img src="/static/images/megamillions-logo-placeholder.png" alt="Mega Millions Logo" class="lottery-logo-small">
+                <!-- Mega Millions Card -->
+                <div class="lottery-card-premium" data-game="Mega Millions">
+                    <img src="/static/images/megamillions-logo-placeholder.png" alt="Mega Millions Logo" class="lottery-logo-premium">
                     <h3>Mega Millions</h3>
-                    <p>Jackpots milionários em todo o país.</p>
-                    <button class="button select-button">Acessar Dashboard</button>
+                    <p>Prêmios multimilionários em todo o país.</p>
+                    <button class="button-premium select-button-premium">Acessar Dashboard</button>
                 </div>
-                <div class="lottery-card" data-game="Cash4Life">
-                     <img src="/static/images/cash4life-logo-placeholder.png" alt="Cash4Life Logo" class="lottery-logo-small">
+                <!-- Cash4Life Card -->
+                <div class="lottery-card-premium" data-game="Cash4Life">
+                    <img src="/static/images/cash4life-logo-placeholder.png" alt="Cash4Life Logo" class="lottery-logo-premium">
                     <h3>Cash4Life</h3>
                     <p>Ganhe $1,000 por dia para o resto da vida.</p>
-                    <button class="button select-button">Acessar Dashboard</button>
+                    <button class="button-premium select-button-premium">Acessar Dashboard</button>
                 </div>
             </div>
         </section>
 
-        <!-- Dashboard View (Initially Hidden) -->
-        <section id="dashboard-view" class="view">
-            <div class="dashboard-header">
-                <button id="back-to-selection" class="button back-button">&lt; Voltar</button>
-                <h1 id="dashboard-title">Dashboard</h1> <!-- Title updated by JS -->
-                <img id="dashboard-game-logo" src="" alt="Lottery Logo" class="lottery-logo-large">
+        <!-- Game Dashboard View -->
+        <section id="dashboard-view-premium" class="view">
+            <div class="dashboard-header-premium">
+                <button id="back-to-selection-premium" class="button-premium back-button-premium">&larr; Voltar</button>
+                <h1 id="dashboard-title-premium">Dashboard</h1>
+                <img src="" alt="Logo da Loteria" id="dashboard-game-logo-premium" class="lottery-logo-dashboard-premium">
             </div>
 
-            <div class="dashboard-content">
-                <!-- Smart Pick Section -->
-                <div class="dashboard-card" id="smart-pick-section">
-                    <h2>Smart Pick</h2>
-                    <div id="smart-pick-analysis">
-                        <h4>Baseado em:</h4>
+            <div class="dashboard-grid-premium">
+
+                <!-- Smart Pick Card -->
+                <div class="dashboard-card-premium smart-pick-card">
+                    <h2>Smart Pick IA</h2>
+                    <div id="smart-pick-analysis-premium" class="analysis-section">
+                        <h4>Análise Atual:</h4>
                         <ul>
-                            <li>Top Quentes: <span class="numbers" id="hot-numbers">--</span></li>
-                            <li>Top Frios: <span class="numbers" id="cold-numbers">--</span></li>
-                            <li>Top Especiais Quentes: <span class="numbers" id="hot-special">--</span></li>
-                            <li>Top Especiais Frios: <span class="numbers" id="cold-special">--</span></li>
+                            <li>Quentes: <span id="hot-numbers-premium" class="numbers-premium">--</span></li>
+                            <li>Frios: <span id="cold-numbers-premium" class="numbers-premium">--</span></li>
+                            <li>Especial Quente: <span id="hot-special-premium" class="numbers-premium">--</span></li>
+                            <li>Especial Frio: <span id="cold-special-premium" class="numbers-premium">--</span></li>
                         </ul>
                     </div>
-                    <div id="prediction-output">
-                        <h4>Combinações Sugeridas:</h4>
-                        <div id="prediction-table-placeholder">Carregando previsões...</div>
-                        <div id="loading" style="display: none;">Gerando...</div>
-                        <div id="error-message" style="display: none; color: red;"></div>
+                    <div id="prediction-output-premium" class="prediction-section">
+                        <h4>Previsões Geradas:</h4>
+                        <div id="prediction-table-placeholder-premium">Clique em "Gerar" para novas previsões.</div>
                     </div>
-                    <button id="predict-button" class="button primary-button">Gerar Novo Smart Pick</button>
+                    <div id="loading-premium" class="loading-indicator" style="display: none;">Gerando previsões...</div>
+                    <div id="error-message-premium" class="error-message" style="display: none;"></div>
+                    <button id="predict-button-premium" class="button-premium primary-button-premium">Gerar Novo Smart Pick</button>
                 </div>
 
-                <!-- Ticket Checker Section -->
-                <div class="dashboard-card" id="ticket-checker-section">
+                <!-- Ticket Checker Card -->
+                <div class="dashboard-card-premium ticket-checker-card">
                     <h2>Verificador de Bilhetes</h2>
-                    <div class="form-group">
-                        <label for="ticket-numbers">Números Principais:</label>
-                        <input type="text" id="ticket-numbers" placeholder="Ex: 12 6 32 17 27">
+                    <div class="form-group-premium">
+                        <label for="ticket-numbers-premium">Seus Números Principais (separados por vírgula ou espaço):</label>
+                        <input type="text" id="ticket-numbers-premium" placeholder="Ex: 5, 12, 23, 34, 45">
                     </div>
-                    <div class="form-group">
-                        <label for="special-number">Nº Especial:</label>
-                        <input type="text" id="special-number" placeholder="Ex: 10">
+                    <div class="form-group-premium">
+                        <label for="special-number-premium">Seu Número Especial (se aplicável):</label>
+                        <input type="text" id="special-number-premium" placeholder="Ex: 10">
                     </div>
-                    <div class="form-group">
-                        <label for="draw-date">Data Sorteio:</label>
-                        <input type="date" id="draw-date">
+                    <div class="form-group-premium">
+                        <label for="draw-date-premium">Data do Sorteio:</label>
+                        <input type="date" id="draw-date-premium">
                     </div>
-                    <button id="check-ticket-button" class="button">Verificar</button>
-                    <div id="checker-result" class="result-box" style="display: none; margin-top: 15px;"></div>
+                    <button id="check-ticket-button-premium" class="button-premium">Verificar Bilhete</button>
+                    <div id="checker-result-premium" class="result-box-premium" style="display: none;"></div>
                 </div>
 
-                <!-- Other Tools Section -->
-                <div class="dashboard-card" id="other-tools-section">
+                <!-- Other Tools Card -->
+                <div class="dashboard-card-premium other-tools-card">
                     <h2>Outras Ferramentas</h2>
-                    <ul class="tools-list">
-                        <li><a href="#" class="disabled-link">Resultados Anteriores</a></li>
-                        <li><a href="#" class="disabled-link">Pagamentos (Payout)</a></li>
-                        <li><a href="#" class="disabled-link">Gráfico de Frequência</a></li>
-                        <li><a href="#" class="disabled-link">Análise de Jackpot</a></li>
-                        <li><a href="#" class="disabled-link">Matriz de Prêmios</a></li>
-                        <li><a href="#" class="disabled-link">Guia do Usuário</a></li>
+                    <ul class="tools-list-premium">
+                        <li><a href="#" class="disabled-link-premium">Resultados Anteriores (Em breve)</a></li>
+                        <li><a href="#" class="disabled-link-premium">Pagamentos (Em breve)</a></li>
+                        <li><a href="#" class="disabled-link-premium">Gráfico de Frequência (Em breve)</a></li>
+                        <li><a href="#" class="disabled-link-premium">Análise de Jackpot (Em breve)</a></li>
+                        <li><a href="#" class="disabled-link-premium">Matriz de Prêmios (Em breve)</a></li>
+                        <li><a href="#" class="disabled-link-premium">Guia do Usuário (Em breve)</a></li>
                     </ul>
                 </div>
 
-                 <!-- Notification Settings Section -->
-                <div class="dashboard-card" id="notification-settings-section">
+                <!-- Reminder Settings Card -->
+                <div class="dashboard-card-premium reminder-settings-card">
                     <h2>Lembretes de Sorteio</h2>
-                    <div class="notification-toggle" data-game-toggle="Powerball">
-                        <label for="powerball-reminder">Powerball:</label>
-                        <label class="switch">
-                            <input type="checkbox" id="powerball-reminder">
-                            <span class="slider round"></span>
+                    <div class="notification-toggle-premium" data-game-toggle="Powerball">
+                        <span>Powerball</span>
+                        <label class="switch-premium">
+                            <input type="checkbox" id="powerball-reminder-premium">
+                            <span class="slider-premium round"></span>
                         </label>
                     </div>
-                    <div class="notification-toggle" data-game-toggle="Mega Millions">
-                        <label for="megamillions-reminder">Mega Millions:</label>
-                        <label class="switch">
-                            <input type="checkbox" id="megamillions-reminder">
-                            <span class="slider round"></span>
+                    <div class="notification-toggle-premium" data-game-toggle="Mega Millions">
+                        <span>Mega Millions</span>
+                        <label class="switch-premium">
+                            <input type="checkbox" id="megamillions-reminder-premium">
+                            <span class="slider-premium round"></span>
                         </label>
                     </div>
-                    <div class="notification-toggle" data-game-toggle="Cash4Life">
-                        <label for="cash4life-reminder">Cash4Life:</label>
-                        <label class="switch">
-                            <input type="checkbox" id="cash4life-reminder">
-                            <span class="slider round"></span>
+                    <div class="notification-toggle-premium" data-game-toggle="Cash4Life">
+                        <span>Cash4Life</span>
+                        <label class="switch-premium">
+                            <input type="checkbox" id="cash4life-reminder-premium">
+                            <span class="slider-premium round"></span>
                         </label>
                     </div>
                 </div>
-            </div>
+
+            </div> <!-- End dashboard-grid -->
         </section>
+
     </main>
 
-    <footer class="app-footer">
+    <footer class="app-footer-premium">
         <p>&copy; 2025 LottoWins AI / Lotto Cash. Jogue com responsabilidade.</p>
     </footer>
 

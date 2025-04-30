@@ -1,313 +1,400 @@
 :root {
-    --primary-color: #4a90e2; /* Example blue */
-    --secondary-color: #f5a623; /* Example orange */
-    --background-color: #f8f9fa; /* Light grey background */
-    --card-background: #ffffff; /* White cards */
-    --text-primary: #333333;
-    --text-secondary: #666666;
-    --border-color: #dee2e6;
-    --font-family: 'Inter', sans-serif;
-    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    --border-radius: 8px;
+    /* Premium Palette - Example (adjust as needed) */
+    --primary-accent: #007AFF; /* Vibrant Blue */
+    --secondary-accent: #FF9500; /* Vibrant Orange */
+    --background-light: #ffffff;
+    --background-medium: #f2f2f7;
+    --background-dark: #1c1c1e; /* For potential dark mode */
+    --card-background-light: #ffffff;
+    --card-background-dark: #2c2c2e;
+    --text-primary-light: #1d1d1f;
+    --text-primary-dark: #ffffff;
+    --text-secondary-light: #6e6e73;
+    --text-secondary-dark: #8e8e93;
+    --border-light: #d1d1d6;
+    --border-dark: #424245;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --success-color: #34C759;
+    --warning-color: #FFCC00;
+    --error-color: #FF3B30;
+
+    --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
 }
 
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+html {
+    font-size: 16px;
+}
+
 body {
-    font-family: var(--font-family);
-    background-color: var(--background-color);
-    color: var(--text-primary);
-    line-height: 1.6;
+    font-family: var(--font-family-sans);
+    background-color: var(--background-medium);
+    color: var(--text-primary-light);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-.app-header {
-    background-color: var(--card-background);
-    padding: 1rem 2rem;
+/* --- Header --- */
+.app-header-premium {
+    background-color: var(--background-light);
+    padding: var(--spacing-md) var(--spacing-lg);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: var(--box-shadow);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.logo-container img {
-    height: 40px; /* Adjust as needed */
+.logo-container-premium {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.logo-container-premium img {
+    height: 32px; /* Adjust */
     display: block;
 }
 
-#menu-button {
+.logo-container-premium span {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--text-primary-light);
+}
+
+#menu-toggle-premium {
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
-    /* Add styling for menu functionality later */
+    color: var(--text-primary-light);
+    /* Basic styling, full menu needs JS */
 }
 
-#main-content {
+/* --- Main Content --- */
+#main-content-premium {
     flex-grow: 1;
-    padding: 2rem;
-    max-width: 1200px;
+    padding: var(--spacing-lg);
+    max-width: 1280px;
     width: 100%;
-    margin: 0 auto;
+    margin: var(--spacing-lg) auto;
 }
 
-/* View Management */
+/* --- View Management --- */
 .view {
-    display: none; /* Hide views by default */
+    display: none;
 }
 
 .view.active-view {
-    display: block; /* Show the active view */
+    display: block;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-.view-title {
-    font-size: 2rem;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.view-title-premium {
+    font-size: 2.25rem; /* Larger title */
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary-light);
 }
 
-.view-subtitle {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
+.view-subtitle-premium {
+    font-size: 1.1rem;
+    color: var(--text-secondary-light);
+    margin-bottom: var(--spacing-xl);
 }
 
-/* Lottery Selection Cards */
-.lottery-cards-container {
+/* --- Lottery Selection Cards --- */
+.lottery-cards-container-premium {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
 }
 
-.lottery-card {
-    background-color: var(--card-background);
-    border-radius: var(--border-radius);
-    padding: 1.5rem;
-    box-shadow: var(--box-shadow);
-    border: 1px solid var(--border-color);
+.lottery-card-premium {
+    background-color: var(--card-background-light);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    border: 1px solid var(--border-light);
     text-align: center;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.lottery-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.lottery-card-premium:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.lottery-logo-small {
-    height: 30px; /* Adjust as needed */
-    margin-bottom: 1rem;
+.lottery-logo-premium {
+    height: 40px; /* Adjust */
+    margin-bottom: var(--spacing-md);
     object-fit: contain;
 }
 
-.lottery-card h3 {
-    margin-bottom: 0.5rem;
-    font-size: 1.25rem;
+.lottery-card-premium h3 {
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.4rem;
+    font-weight: 600;
 }
 
-.lottery-card p {
-    color: var(--text-secondary);
-    margin-bottom: 1.5rem;
-    min-height: 40px; /* Ensure consistent height */
+.lottery-card-premium p {
+    color: var(--text-secondary-light);
+    margin-bottom: var(--spacing-lg);
+    flex-grow: 1; /* Push button down */
 }
 
-/* Dashboard View */
-.dashboard-header {
+/* --- Dashboard View --- */
+.dashboard-header-premium {
     display: flex;
     align-items: center;
-    margin-bottom: 2rem;
-    gap: 1rem;
+    margin-bottom: var(--spacing-xl);
+    gap: var(--spacing-md);
     flex-wrap: wrap;
 }
 
-#dashboard-title {
-    font-size: 1.8rem;
+#back-to-selection-premium {
+    margin-right: auto; /* Push title and logo to the right */
+}
+
+#dashboard-title-premium {
+    font-size: 2rem;
     font-weight: 700;
-    flex-grow: 1; /* Push logo to the right */
+    margin: 0; /* Reset margin */
 }
 
-.lottery-logo-large {
-    height: 40px; /* Adjust as needed */
+.lottery-logo-dashboard-premium {
+    height: 45px; /* Adjust */
     object-fit: contain;
+    margin-left: var(--spacing-sm);
 }
 
-.dashboard-content {
+.dashboard-grid-premium {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
 }
 
-.dashboard-card {
-    background-color: var(--card-background);
-    border-radius: var(--border-radius);
-    padding: 1.5rem;
-    box-shadow: var(--box-shadow);
-    border: 1px solid var(--border-color);
-}
-
-.dashboard-card h2 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.5rem;
-}
-
-/* Smart Pick Section */
-#smart-pick-analysis ul {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 1rem;
-}
-
-#smart-pick-analysis li {
-    margin-bottom: 0.5rem;
-    color: var(--text-secondary);
-}
-
-.numbers {
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-#prediction-output h4 {
-    margin-bottom: 0.5rem;
-}
-
-#prediction-table-placeholder {
-    min-height: 100px; /* Placeholder height */
-    background-color: #eee;
-    border-radius: 4px;
+.dashboard-card-premium {
+    background-color: var(--card-background-light);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    border: 1px solid var(--border-light);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-secondary);
-    margin-bottom: 1rem;
-    padding: 1rem;
+    flex-direction: column;
 }
 
-/* Buttons */
-.button {
+.dashboard-card-premium h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-primary-light);
+}
+
+/* --- Smart Pick Card --- */
+.smart-pick-card .analysis-section ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+.smart-pick-card .analysis-section li {
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-secondary-light);
+    font-size: 0.9rem;
+}
+
+.numbers-premium {
+    font-weight: 600;
+    color: var(--text-primary-light);
+    background-color: var(--background-medium);
+    padding: 2px 6px;
+    border-radius: var(--border-radius-sm);
+    margin-left: var(--spacing-xs);
+}
+
+.prediction-section h4 {
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+}
+
+#prediction-table-placeholder-premium {
+    background-color: var(--background-medium);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    min-height: 80px;
+    color: var(--text-secondary-light);
+}
+
+#prediction-table-placeholder-premium ul {
+    list-style: none;
+    padding: 0;
+}
+#prediction-table-placeholder-premium li {
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.1rem;
+}
+.special-ball {
+    background-color: var(--primary-accent);
+    color: white;
+    font-weight: 700;
+    border-radius: 50%;
+    padding: 4px 8px;
+    margin-left: var(--spacing-sm);
     display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
+    min-width: 28px; /* Ensure circle shape */
     text-align: center;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    background-color: #e9ecef;
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
 }
 
-.button:hover {
-    background-color: #ced4da;
+.loading-indicator {
+    text-align: center;
+    color: var(--text-secondary-light);
+    padding: var(--spacing-md) 0;
 }
 
-.button:active {
-    transform: scale(0.98);
+.error-message {
+    color: var(--error-color);
+    background-color: #ffebee;
+    border: 1px solid var(--error-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.9rem;
 }
 
-.button.primary-button, .button.select-button {
-    background-color: var(--primary-color);
-    color: #ffffff;
-    border: 1px solid var(--primary-color);
+/* --- Ticket Checker Card --- */
+.form-group-premium {
+    margin-bottom: var(--spacing-md);
 }
 
-.button.primary-button:hover, .button.select-button:hover {
-    background-color: #3a7bc8; /* Darker blue */
-}
-
-.button.back-button {
-    padding: 0.5rem 1rem;
-}
-
-/* Forms */
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-group label {
+.form-group-premium label {
     display: block;
-    margin-bottom: 0.3rem;
+    margin-bottom: var(--spacing-xs);
     font-weight: 600;
     font-size: 0.9rem;
+    color: var(--text-secondary-light);
 }
 
-.form-group input[type="text"],
-.form-group input[type="date"] {
+.form-group-premium input[type="text"],
+.form-group-premium input[type="date"] {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: 0.9rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    background-color: var(--background-light);
+    color: var(--text-primary-light);
+    transition: border-color 0.2s ease;
 }
 
-.result-box {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: #e9f5ff; /* Light blue background */
-    border: 1px solid #bde0fe;
-    border-radius: var(--border-radius);
-    color: #075985;
+.form-group-premium input[type="text"]:focus,
+.form-group-premium input[type="date"]:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
 }
 
-/* Other Tools */
-.tools-list {
+.result-box-premium {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    font-size: 0.95rem;
+    border: 1px solid transparent;
+}
+
+/* --- Other Tools Card --- */
+.tools-list-premium {
     list-style: none;
     padding: 0;
 }
 
-.tools-list li {
-    margin-bottom: 0.5rem;
+.tools-list-premium li {
+    margin-bottom: var(--spacing-sm);
 }
 
-.tools-list a {
-    color: var(--primary-color);
+.tools-list-premium a {
+    color: var(--primary-accent);
     text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
 }
 
-.tools-list a:hover {
+.tools-list-premium a:hover {
+    color: #0056b3; /* Darker blue */
     text-decoration: underline;
 }
 
-.disabled-link {
-    color: var(--text-secondary);
+.disabled-link-premium {
+    color: var(--text-secondary-light);
     pointer-events: none;
     text-decoration: none;
+    font-weight: 400;
 }
 
-/* Notification Toggles */
-.notification-toggle {
+/* --- Reminder Settings Card --- */
+.notification-toggle-premium {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+}
+.notification-toggle-premium:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
 }
 
-.switch {
+.notification-toggle-premium span {
+    font-weight: 600;
+}
+
+.switch-premium {
     position: relative;
     display: inline-block;
-    width: 44px; /* Smaller switch */
-    height: 24px;
+    width: 50px;
+    height: 28px;
 }
 
-.switch input { 
+.switch-premium input { 
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-.slider {
+.slider-premium {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -318,58 +405,133 @@ body {
     transition: .4s;
 }
 
-.slider:before {
+.slider-premium:before {
     position: absolute;
     content: "";
-    height: 18px;
-    width: 18px;
+    height: 22px;
+    width: 22px;
     left: 3px;
     bottom: 3px;
     background-color: white;
     transition: .4s;
 }
 
-input:checked + .slider {
-    background-color: var(--primary-color);
+input:checked + .slider-premium {
+    background-color: var(--primary-accent);
 }
 
-input:checked + .slider:before {
-    transform: translateX(20px);
+input:checked + .slider-premium:before {
+    transform: translateX(22px);
 }
 
-.slider.round {
-    border-radius: 24px;
+.slider-premium.round {
+    border-radius: 28px;
 }
 
-.slider.round:before {
+.slider-premium.round:before {
     border-radius: 50%;
 }
 
-/* Footer */
-.app-footer {
+/* --- Buttons --- */
+.button-premium {
+    display: inline-block;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
     text-align: center;
-    padding: 1.5rem;
-    margin-top: 2rem;
-    background-color: var(--card-background);
-    border-top: 1px solid var(--border-color);
-    color: var(--text-secondary);
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    background-color: var(--background-medium);
+    color: var(--text-primary-light);
+    border: 1px solid var(--border-light);
+}
+
+.button-premium:hover {
+    background-color: #e1e1e6;
+    border-color: #c1c1c6;
+}
+
+.button-premium:active {
+    transform: scale(0.97);
+}
+
+.button-premium.primary-button-premium,
+.button-premium.select-button-premium {
+    background-color: var(--primary-accent);
+    color: #ffffff;
+    border: 1px solid var(--primary-accent);
+    box-shadow: 0 2px 4px rgba(0, 122, 255, 0.2);
+}
+
+.button-premium.primary-button-premium:hover,
+.button-premium.select-button-premium:hover {
+    background-color: #005ecb; /* Darker blue */
+    box-shadow: 0 4px 8px rgba(0, 122, 255, 0.3);
+}
+
+.button-premium.back-button-premium {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.9rem;
+    background-color: transparent;
+    border: none;
+    color: var(--primary-accent);
+}
+
+.button-premium.back-button-premium:hover {
+    background-color: rgba(0, 122, 255, 0.1);
+}
+
+/* --- Footer --- */
+.app-footer-premium {
+    text-align: center;
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    background-color: var(--background-light);
+    border-top: 1px solid var(--border-light);
+    color: var(--text-secondary-light);
     font-size: 0.9rem;
 }
 
-/* Responsive Adjustments (Basic Example) */
+/* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
-    .app-header {
-        padding: 1rem;
+    html {
+        font-size: 15px;
     }
-    #main-content {
-        padding: 1rem;
+    .app-header-premium {
+        padding: var(--spacing-md);
     }
-    .view-title {
+    #main-content-premium {
+        padding: var(--spacing-md);
+        margin: var(--spacing-md) auto;
+    }
+    .view-title-premium {
         font-size: 1.8rem;
     }
-    .dashboard-header {
+    .view-subtitle-premium {
+        font-size: 1rem;
+        margin-bottom: var(--spacing-lg);
+    }
+    .dashboard-header-premium {
         flex-direction: column;
         align-items: flex-start;
+    }
+    #back-to-selection-premium {
+        margin-right: 0;
+        margin-bottom: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+    .lottery-cards-container-premium {
+        grid-template-columns: 1fr; /* Stack cards on small screens */
+    }
+    .dashboard-grid-premium {
+        grid-template-columns: 1fr;
     }
 }
 
