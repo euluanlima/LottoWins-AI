@@ -7,7 +7,7 @@ import pandas as pd
 from flask import Flask, jsonify, render_template, request, abort
 
 # Import the prediction function directly
-from lotto_predictor import generate_prediction_data
+from .lotto_predictor import generate_prediction_data
 
 # Get the absolute path of the directory where this script is located
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
