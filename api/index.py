@@ -6,8 +6,15 @@ import os
 import pandas as pd
 from flask import Flask, jsonify, render_template, request, abort
 
-# Corrected Flask app initialization (removed extra backslashes)
-app = Flask(__name__, static_folder='static', static_url_path='/static')
+# Get the absolute path of the directory where this script is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Define the path to the public folder relative to BASE_DIR (../public)
+PUBLIC_FOLDER = os.path.join(BASE_DIR, '..', 'public')
+# Define the path to the data folder relative to BASE_DIR (../data)
+DATA_FOLDER = os.path.join(BASE_DIR, '..', 'data')
+
+# Initialize Flask app, pointing static folder to the new 'public' directory
+app = Flask(__name__, static_folder=PUBLIC_FOLDER, static_url_path='/static')
 
 # --- Configuration ---
 AVAILABLE_GAMES = ["Powerball", "Mega Millions", "Cash4Life"]
@@ -22,8 +29,8 @@ def parse_hot_cold_file(game_name):
         "cold_special": []
     }
     try:
-        # Corrected file path formatting (removed extra backslashes)
-        file_path = f"/home/ubuntu/{game_name.lower().replace(' ', '_')}_hot_cold_analysis.txt"
+        # Construct path relative to the DATA_FOLDER
+        file_path = os.path.join(DATA_FOLDER, f"{game_name.lower().replace(' ', '_')}_hot_cold_analysis.txt")
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
 
@@ -43,38 +50,57 @@ def parse_hot_cold_file(game_name):
                 analysis["cold_special"] = [int(n.strip()) for n in cold_special_match.group(1).split(",")]
 
     except FileNotFoundError:
-        print(f"Warning: Analysis file not found for {game_name}")
+        print(f"Warning: Analysis file not found for {game_name} at {file_path}")
     except Exception as e:
         print(f"Error parsing analysis file for {game_name}: {e}")
 
     return analysis
 
 # --- Routes ---
+# Route for serving the main HTML page (now from public folder)
 @app.route("/")
 def index():
     """Serves the main HTML page."""
-    return render_template("index.html")
+    # Render the index.html from the 'public' folder (Flask automatically looks here due to static_folder setting)
+    # However, for the root route, we usually render a template. Let's assume index.html is treated as a template.
+    # If index.html is purely static, Vercel's routing might handle it directly.
+    # For Flask to serve it from the root, we might need to adjust Vercel routes or serve it explicitly.
+    # Let's keep render_template for now, assuming it's in a templates folder *inside* public, or adjust later.
+    # For Vercel deployment, it's often better to let Vercel handle static file serving.
+    # Let's adjust Flask to NOT serve static files from root, Vercel will handle it.
+    # We only need Flask for API routes.
+    # So, we remove the render_template call here.
+    # Vercel will serve public/index.html for the root path.
+    # We need to adjust vercel.json if this is the case.
+    # Let's revert for now and assume Flask serves index.html from a 'templates' folder *within* 'public'
+    # This requires moving index.html to public/templates/index.html
+    # Let's simplify: Assume index.html is in 'public' and Flask serves API endpoints only.
+    # The root route in Flask might not be needed if Vercel serves public/index.html directly.
+    # Let's comment out the root route for now and rely on Vercel's static serving.
+    # return render_template("index.html") # Assuming index.html is in a 'templates' folder
+    pass # Or return a simple API confirmation
 
+# Route for API prediction
 @app.route("/predict/<string:game_name>", methods=["GET"])
 def get_prediction(game_name):
     """Endpoint to get prediction and analysis for a specific game."""
     if game_name not in AVAILABLE_GAMES:
-        # Correctly format the error message using f-string
-        abort(404, description=f"Game '{game_name}' not available or not supported.") # Corrected quotes
+        abort(404, description=f"Game '{game_name}' not available or not supported.")
 
     prediction_data = {}
     error_occurred = False
     error_message = "Prediction failed."
 
     try:
-        # Run the predictor script
+        # Construct path to the predictor script within the api directory
+        predictor_script_path = os.path.join(BASE_DIR, "lotto_predictor.py")
         result = subprocess.run(
-            ["python3", "/home/ubuntu/lotto_predictor.py", game_name],
+            ["python3", predictor_script_path, game_name],
             capture_output=True,
             text=True,
-            check=True
+            check=True,
+            cwd=BASE_DIR # Ensure the script runs with the api directory as cwd
         )
-        # Try to parse the JSON output from the script
         try:
             prediction_data = json.loads(result.stdout)
         except json.JSONDecodeError:
@@ -89,8 +115,8 @@ def get_prediction(game_name):
         print(f"Stderr: {e.stderr}")
     except FileNotFoundError:
         error_occurred = True
-        error_message = "Prediction script not found."
-        print("FileNotFoundError: lotto_predictor.py not found")
+        error_message = f"Prediction script not found at {predictor_script_path}."
+        print(f"FileNotFoundError: {predictor_script_path} not found")
     except Exception as e:
         error_occurred = True
         error_message = f"An unexpected error occurred: {e}"
@@ -99,15 +125,14 @@ def get_prediction(game_name):
     if error_occurred:
         return jsonify({"error": error_message}), 500
     else:
-        # Get hot/cold analysis
         analysis_data = parse_hot_cold_file(game_name)
-        # Combine prediction and analysis
         response_data = {
             "prediction": prediction_data.get("prediction", {}),
             "analysis": analysis_data
         }
         return jsonify(response_data)
 
+# Route for API ticket checking
 @app.route("/check_ticket", methods=["POST"])
 def check_ticket():
     """Endpoint to check user ticket against historical data."""
@@ -124,49 +149,37 @@ def check_ticket():
         abort(400, description="Missing required fields: game, date, numbers.")
 
     if game_name not in AVAILABLE_GAMES:
-        abort(400, description=f"Game '{game_name}' not supported for checking.") # Corrected quotes
+        abort(400, description=f"Game '{game_name}' not supported for checking.")
 
     try:
-        # Parse user numbers
         user_main_numbers = set(int(n.strip()) for n in ticket_numbers_str.split() if n.strip().isdigit())
         user_special_number = int(special_number_str.strip()) if special_number_str.strip().isdigit() else None
-
-        # Format user date to match CSV (YYYY-MM-DD)
-        # Important: Ensure the date format from the input matches what pd.to_datetime expects
-        # Assuming input is YYYY-MM-DD from <input type="date">
         user_draw_date = pd.to_datetime(draw_date_str).strftime("%Y-%m-%d")
 
-        # Load historical data
-        # Corrected file path formatting (removed extra backslashes)
-        csv_file = f"/home/ubuntu/{game_name.lower().replace(' ', '_')}_processed_camelot.csv"
+        # Construct path relative to the DATA_FOLDER
+        csv_file = os.path.join(DATA_FOLDER, f"{game_name.lower().replace(' ', '_')}_processed_camelot.csv")
         df = pd.read_csv(csv_file)
 
-        # Ensure date column is in the correct format for comparison (YYYY-MM-DD)
-        # Handle potential errors during date conversion in the CSV
         try:
             df['Draw Date'] = pd.to_datetime(df['Draw Date'], errors='coerce').dt.strftime("%Y-%m-%d")
-            df.dropna(subset=['Draw Date'], inplace=True) # Remove rows where date conversion failed
+            df.dropna(subset=['Draw Date'], inplace=True)
         except KeyError:
              return jsonify({"error": f"Coluna 'Draw Date' não encontrada no arquivo CSV para {game_name}."}), 500
 
-        # Find the matching draw
         result_row = df[df['Draw Date'] == user_draw_date]
 
         if result_row.empty:
             return jsonify({"message": f"Nenhum sorteio encontrado para {game_name} na data {user_draw_date}."})
 
-        # Extract winning numbers from the first matching row
         winning_row = result_row.iloc[0]
-
-        # Determine column names dynamically based on game
         main_numbers_col = 'Winning Numbers'
         special_number_col = None
         if game_name == 'Powerball':
             special_number_col = 'PB'
         elif game_name == 'Mega Millions':
-            special_number_col = 'Mega Ball' # Assuming this is the column name, adjust if needed
+            special_number_col = 'Mega Ball'
         elif game_name == 'Cash4Life':
-             special_number_col = 'Cash Ball' # Assuming this is the column name, adjust if needed
+             special_number_col = 'Cash Ball'
 
         try:
             winning_main_str = winning_row[main_numbers_col]
@@ -174,15 +187,12 @@ def check_ticket():
         except KeyError as e:
              return jsonify({"error": f"Coluna esperada '{e}' não encontrada no arquivo CSV para {game_name}."}), 500
 
-        # Parse winning numbers
         winning_main_numbers = set(int(n.strip()) for n in str(winning_main_str).split() if n.strip().isdigit())
         winning_special_number = int(winning_special_str.strip()) if winning_special_str.strip().isdigit() else None
 
-        # Compare numbers
         main_matches = len(user_main_numbers.intersection(winning_main_numbers))
         special_match = (user_special_number is not None and winning_special_number is not None and user_special_number == winning_special_number)
 
-        # Build result message
         message = f"Resultado para {user_draw_date}: "
         if main_matches > 0:
             message += f"Você acertou {main_matches} número(s) principal(is)"
@@ -204,18 +214,16 @@ def check_ticket():
         })
 
     except FileNotFoundError:
-        return jsonify({"error": f"Arquivo histórico para {game_name} não encontrado."}), 500
+        return jsonify({"error": f"Arquivo histórico para {game_name} não encontrado em {csv_file}."}), 500
     except ValueError:
         abort(400, description="Formato inválido para números ou data. Verifique os dados inseridos.")
     except Exception as e:
         print(f"Error checking ticket: {e}")
         import traceback
-        traceback.print_exc() # Print detailed traceback for debugging
+        traceback.print_exc()
         return jsonify({"error": "Ocorreu um erro inesperado ao verificar o bilhete."}), 500
 
-# --- Main Execution ---
-if __name__ == "__main__":
-    # Make sure to run on 0.0.0.0 to be accessible externally
-    # Corrected host and port arguments (removed extra backslashes)
-    app.run(host='0.0.0.0', port=5000)
+# --- Main Execution (Not needed for Vercel) ---
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0', port=5000)
 

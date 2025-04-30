@@ -4,17 +4,26 @@ import random
 import sys
 import json
 import argparse # Import argparse
+import os # Import os module
 from collections import Counter
 from io import StringIO
+
+# Get the absolute path of the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Define the path to the data folder relative to SCRIPT_DIR (../data)
+DATA_FOLDER = os.path.join(SCRIPT_DIR, '..', 'data')
 
 def read_frequency_data(freq_file):
     """Reads the combined frequency CSV and separates main and special ball data."""
     try:
+        # Ensure the path exists before trying to open
+        if not os.path.exists(freq_file):
+            raise FileNotFoundError(f"Frequency file not found at {freq_file}")
         with open(freq_file, "r", encoding="utf-8") as f:
             lines = f.readlines()
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         # Return empty dataframes on error, let caller handle
-        # print(f"Error: Frequency file {freq_file} not found.", file=sys.stderr)
+        # print(f"Error: {e}", file=sys.stderr)
         return pd.DataFrame(columns=["Number", "Frequency"]), pd.DataFrame(columns=["Special_Number", "Frequency"])
     except Exception as e:
         # print(f"Error reading file {freq_file}: {e}", file=sys.stderr)
@@ -95,7 +104,8 @@ def read_frequency_data(freq_file):
 def predict_numbers(game, num_main, num_special):
     """Predicts lottery numbers based on frequency analysis."""
     game_file_part = game.lower().replace(" ", "_")
-    freq_file = f"/home/ubuntu/{game_file_part}_frequency_analysis.csv"
+    # Construct path relative to the DATA_FOLDER
+    freq_file = os.path.join(DATA_FOLDER, f"{game_file_part}_frequency_analysis.csv")
     main_freq, special_freq = read_frequency_data(freq_file)
 
     # Handle potential empty dataframes returned by read_frequency_data
