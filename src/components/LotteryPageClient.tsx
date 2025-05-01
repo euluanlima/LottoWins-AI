@@ -47,42 +47,30 @@ export default function LotteryPageClient({ lotteryId }: LotteryPageClientProps)
   const [isLoading, setIsLoading] = useState<boolean>(true); // Loading state
   const [error, setError] = useState<string | null>(null); // Error state
 
-  // Fetch results from the internal API route
+  // Load mock results directly instead of fetching from non-existent API
   useEffect(() => {
-    const fetchResults = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(`/api/lottery-results/${lotteryId}`);
-        if (!response.ok) {
-          const errorData: unknown = await response.json();
-          // Safely access the error property from the unknown type
-          let apiErrorMessage = `Failed to fetch results (${response.status})`;
-          if (typeof errorData === 'object' && errorData !== null && 'error' in errorData && typeof errorData.error === 'string') {
-            apiErrorMessage = errorData.error;
-          }
-          throw new Error(apiErrorMessage);
-        }
-        const data: Result[] = await response.json();
-        setResults(data);
-      } catch (err) { // err is 'unknown'
-        console.error("Error fetching lottery results:", err);
-        // Type check to safely access error message
-        let errorMessage = "An unknown error occurred while fetching results.";
-        if (err instanceof Error) {
-          errorMessage = err.message;
-        }
-        setError(errorMessage);
-        // Fallback to mock data on error
-        const fallbackData = (mockResultsData as any)[lotteryId as keyof typeof mockResultsData] || [];
-        setResults(fallbackData);
-      } finally {
-        setIsLoading(false);
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Directly use mock data based on lotteryId
+      const fallbackData = (mockResultsData as any)[lotteryId as keyof typeof mockResultsData] || [];
+      setResults(fallbackData);
+      if (fallbackData.length === 0) {
+        console.warn(`No mock data found for lottery ID: ${lotteryId}`);
+        // Optionally set an error or leave results empty
       }
-    };
-
-    if (lotteryId) {
-      fetchResults();
+    } catch (err) {
+      console.error("Error loading mock results:", err);
+      let errorMessage = "An unknown error occurred while loading mock results.";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      setError(errorMessage);
+      setResults([]); // Ensure results are empty on error
+    } finally {
+      // Simulate a small delay for loading state if needed, otherwise set false directly
+      // setTimeout(() => setIsLoading(false), 300); // Optional simulated delay
+       setIsLoading(false); 
     }
   }, [lotteryId]); // Re-run effect if lotteryId changes
 

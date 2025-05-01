@@ -45,13 +45,14 @@ export default function RootLayout({
                 <Image 
                   src="/logos/lottowins-ai-logo.png" 
                   alt="LottoWins AI Logo" 
-                  width={180} // Adjust width as needed
-                  height={50} // Adjust height as needed
+                  width={150} // Slightly smaller base width
+                  height={42} // Adjust height proportionally
+                  className="sm:w-[180px] sm:h-[50px]" // Larger size for sm screens and up
                   priority
                 />
               </div>
-              {/* Position ThemeToggle absolutely on the right */}
-              <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+              {/* Position ThemeToggle absolutely in the top-right corner with padding */}
+              <div className="absolute top-4 right-4 z-50"> {/* Adjusted positioning */}
                 <ThemeToggle />
               </div>
             </header>
