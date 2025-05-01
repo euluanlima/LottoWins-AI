@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion'; // Import motion
 
 // Define the messages to cycle through
 const messages = [
@@ -40,11 +41,19 @@ const SmartPickLoading: React.FC = () => {
 
   return (
     // Mimic body styles from reference HTML for centering
-    <div className="flex flex-col items-center justify-center p-5 min-h-[300px]">
-      {/* Loader Glow - Apply animation via CSS */}
-      {/* Ensure the container itself doesn't add an unwanted background behind the image */}
-      {/* Explicitly set bg-transparent for both themes */}
-      <div className="loader-glow w-[110px] h-[110px] rounded-full bg-transparent shadow-[0_0_20px_rgba(139,92,246,0.4),_0_0_40px_rgba(0,255,224,0.15)] flex items-center justify-center mb-6 animate-pulseGlow relative overflow-hidden bg-transparent">
+    <div className="flex flex-col items-center justify-center p-5 min-h-[300px]">      {/* Loader Glow with Framer Motion */}
+      <motion.div 
+        className="loader-glow w-[110px] h-[110px] rounded-full bg-transparent shadow-[0_0_20px_rgba(139,92,246,0.4),_0_0_40px_rgba(0,255,224,0.15)] flex items-center justify-center mb-6 relative overflow-hidden bg-transparent"
+        animate={{
+          scale: [1, 1.05, 1],
+          opacity: [0.9, 1, 0.9],
+        }}
+        transition={{
+          duration: 2,
+          ease: "easeInOut",
+          repeat: Infinity,
+        }}
+      >
         {/* Use the transparent logo - Added bg-transparent to ensure no default background */}
         <Image 
           src="/logos/lottowins-ai-logo-transparent.png" // Use the transparent logo path
@@ -55,12 +64,20 @@ const SmartPickLoading: React.FC = () => {
         />
       </div>
 
-      {/* Message Wrapper */}
+      {/* Message Wrapper with Animation */}
       <div className="message-wrapper min-h-[28px] mb-8">
-        {/* Loading Text - Apply animation via CSS */}
-        <div className="loading-text text-xl text-center text-muted animate-fadein">
-          {messages[currentMessageIndex]}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentMessageIndex} // Animate when index changes
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="loading-text text-xl text-center text-muted"
+          >
+            {messages[currentMessageIndex]}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Numbers - Conditionally display and apply animation */}

@@ -1,273 +1,270 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2 } from 'lucide-react'; // Import Loader2
+import { Loader2 } from 'lucide-react';
+import SmartPickLoading from './SmartPickLoading'; // Assuming this exists for loading animation
 
+// Interface for the prediction data fetched from the API
 interface Prediction {
   numbers: number[];
   megaBall: number; // Assuming Mega Millions for now
   confidence: 'Alta' | 'Média' | 'Baixa';
 }
 
-interface SmartPickProps {
-  lotteryId: string; // Receive lotteryId as a prop
+// Helper function to map confidence level to text and style (similar to original)
+const getConfidenceStyle = (level: 'Alta' | 'Média' | 'Baixa') => {
+  switch (level) {
+    case 'Alta':
+      return { text: 'Confiança Alta', style: 'bg-green-500/10 dark:bg-green-500/20 text-green-600 dark:text-green-400' }; 
+    case 'Média':
+      return { text: 'Confiança Média', style: 'bg-yellow-500/10 dark:bg-yellow-500/20 text-yellow-600 dark:text-yellow-400' };
+    case 'Baixa':
+      return { text: 'Confiança Baixa', style: 'bg-red-500/10 dark:bg-red-500/20 text-red-600 dark:text-red-400' };
+    default:
+      return { text: 'N/A', style: 'bg-muted text-muted-foreground' }; // Fallback
+  }
+};
+
+// Define props for the component
+interface SmartPickComponentProps {
+  lotteryId: string;
 }
 
-export default function SmartPickComponent({ lotteryId }: SmartPickProps) {
+// Mock LotteryInfo structure based on original usage (replace with actual if available)
+interface LotteryInfo {
+  name: string;
+  maxRegularNumber: number;
+}
+
+// Mock getLotteryInfo function (replace with actual if available)
+const getLotteryInfo = (id: string): LotteryInfo | null => {
+  if (id === 'mega-millions') {
+    return { name: 'Mega Millions', maxRegularNumber: 70 };
+  }
+  if (id === 'powerball') {
+    return { name: 'Powerball', maxRegularNumber: 69 };
+  }
+   if (id === 'cash4life') {
+    return { name: 'Cash4Life', maxRegularNumber: 60 };
+  }
+  return null;
+};
+
+export default function SmartPickComponent({ lotteryId }: SmartPickComponentProps) {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false); // For button animation
   const [error, setError] = useState<string | null>(null);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [showEffects, setShowEffects] = useState(false); // For sound/visual effects
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  // Get static lottery info (mocked for now)
+  const lotteryInfo = getLotteryInfo(lotteryId);
 
-  const fetchPredictions = async (numCombinations = 10) => {
+  // Fetch predictions from the API (adapted from current version)
+  const fetchPredictions = useCallback(async (numCombinations = 3) => { // Fetch 3 like original
     setIsLoading(true);
+    setIsGenerating(true); // Show loading state on button too
     setError(null);
     try {
-      // TODO: Pass lotteryId to API if backend supports it in the future
       const response = await fetch(`/api/predict?num=${numCombinations}`);
       if (!response.ok) {
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
           const errorData: unknown = await response.json();
-          // Safely check if errorData is an object and has an 'error' property
           if (typeof errorData === 'object' && errorData !== null && 'error' in errorData && typeof errorData.error === 'string') {
             errorMessage = errorData.error;
           } else {
-            // Optionally log the unexpected error format
             console.warn('API error response format unexpected:', errorData);
           }
         } catch (jsonError) {
-          // Handle cases where response.json() fails (e.g., not valid JSON)
           console.error('Failed to parse error response JSON:', jsonError);
         }
         throw new Error(errorMessage);
       }
       const data: Prediction[] = await response.json();
       setPredictions(data);
-      // Show confetti effect on successful fetch
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 2000);
+      
+      // Play sound and show effects (from original)
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(e => console.error("Error playing sound:", e));
+      }
+      setShowEffects(true);
+      setTimeout(() => setShowEffects(false), 3000);
+
     } catch (e) {
       console.error("Failed to fetch predictions:", e);
       setError(e instanceof Error ? e.message : 'An unknown error occurred while fetching predictions.');
       setPredictions([]); // Clear predictions on error
     } finally {
       setIsLoading(false);
+      setIsGenerating(false);
     }
-  };
+  }, [lotteryId]); // Added lotteryId dependency
 
-  // Fetch predictions on initial component mount and when lotteryId changes
+  // Fetch predictions on initial mount and when lotteryId changes
   useEffect(() => {
-    fetchPredictions(10); // Fetch 10 predictions initially
-  }, [lotteryId]); // Refetch if lotteryId changes
+    fetchPredictions(3);
+  }, [fetchPredictions]); // Use fetchPredictions as dependency
 
+  // Preload audio effect (from original)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      audioRef.current = new Audio("/effects/money-sound.mp3");
+      audioRef.current.preload = "auto";
+    }
+  }, []);
+
+  // Handle generate new picks button click
   const handleGenerateNewPicks = () => {
-    fetchPredictions(10); // Fetch 10 new predictions
+    fetchPredictions(3); // Fetch 3 new predictions
   };
 
-  const getConfidenceColor = (confidence: string) => {
-    switch (confidence) {
-      case 'Alta': return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300';
-      case 'Média': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300';
-      case 'Baixa': return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-    }
+  // Logo paths (from original)
+  const logoPaths: { [key: string]: { path: string; width: number; height: number } } = {
+    'mega-millions': { path: '/logos/mega-millions-logo-large.png', width: 400, height: 110 },
+    'powerball': { path: '/logos/powerball-logo-large.png', width: 400, height: 110 },
+    'cash4life': { path: '/logos/cash4life-logo-large.png', width: 320, height: 90 },
   };
+  const currentLogo = logoPaths[lotteryId];
 
-  const tableVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.05 }
-    }
-  };
-
-  const rowVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
-  // Confetti animation (keep as is)
-  const Confetti = () => {
-    const confettiCount = 100;
-    const colors = ['#3b82f6', '#4ade80', '#a855f7', '#f43f5e', '#f97316', '#facc15'];
-    
+  // Loading state (similar to original, simplified)
+  if (isLoading && predictions.length === 0 && !error) {
     return (
-      <div className="fixed inset-0 pointer-events-none z-50">
-        {Array.from({ length: confettiCount }).map((_, i) => {
-          const size = Math.random() * 10 + 5;
-          const color = colors[Math.floor(Math.random() * colors.length)];
-          const left = Math.random() * 100;
-          const animationDuration = Math.random() * 3 + 2;
-          const delay = Math.random() * 0.5;
-          
-          return (
-            <div 
-              key={i}
-              className="absolute top-0 rounded-sm"
-              style={{
-                left: `${left}%`,
-                width: `${size}px`,
-                height: `${size}px`,
-                backgroundColor: color,
-                animation: `confetti ${animationDuration}s ease-in ${delay}s forwards`,
-                opacity: 0,
-              }}
-            />
-          );
-        })}
-        <style jsx>{`
-          @keyframes confetti {
-            0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-          }
-        `}</style>
+      <div className="container max-w-[1100px] mx-auto bg-surface rounded-[var(--radius)] p-6 md:p-8 shadow-[0_0_80px_rgba(0,255,224,0.04)] flex justify-center items-center min-h-[400px]">
+        <div className="w-12 h-12 border-4 border-muted border-t-primary rounded-full animate-spin"></div>
       </div>
     );
-  };
+  }
 
-  // Determine lottery name for display
-  const lotteryName = lotteryId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  // Error state (using current error message)
+  if (error) {
+    return (
+      <div className="container max-w-[1100px] mx-auto bg-surface rounded-[var(--radius)] p-6 md:p-8 shadow-[0_0_80px_rgba(0,255,224,0.04)]">
+        <h2 className="text-xl font-semibold text-red-500 text-center">Erro ao Carregar Previsões</h2>
+        <p className="text-muted-foreground text-center mt-2">{error}</p> 
+      </div>
+    );
+  }
+
+  // No data state (if API returns empty or info is missing)
+  if (!lotteryInfo) { // Removed !predictions check, handled by loading/error
+    return (
+        <div className="container max-w-[1100px] mx-auto bg-surface rounded-[var(--radius)] p-6 md:p-8 shadow-[0_0_80px_rgba(0,255,224,0.04)]">
+            <p className="text-lg text-muted-foreground text-center">Informações da loteria {lotteryId} não disponíveis.</p>
+        </div>
+    ); 
+  }
 
   return (
-    <motion.div 
-      className="bg-card p-4 sm:p-6 rounded-xl shadow-lg border border-border relative overflow-hidden"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      {/* Decorative elements can be adjusted based on theme */}
-      {/* <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full"></div> */}
-      {/* <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/10 rounded-full"></div> */}
-      
-      {/* Confetti effect */}
-      <AnimatePresence>
-        {showConfetti && <Confetti />}
-      </AnimatePresence>
+    // Structure from original, styles adapted slightly
+    <div className="container max-w-[1100px] mx-auto bg-surface rounded-[var(--radius)] p-5 md:p-6 shadow-[0_0_80px_rgba(0,255,224,0.04)] text-foreground">
+      {/* Header with Logo (from original) */}
+      <header className="text-center mb-6 md:mb-8">
+        {currentLogo && (
+          <div className="flex justify-center mb-4 h-[120px] md:h-[140px]">
+            <Image 
+              src={currentLogo.path} 
+              alt={lotteryInfo?.name ? `${lotteryInfo.name} Logo` : "Lottery Logo"} 
+              width={currentLogo.width}
+              height={currentLogo.height}
+              className="object-contain max-h-full bg-transparent mix-blend-normal"
+              priority
+              unoptimized 
+            />
+          </div>
+        )}
+      </header>
 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 relative z-10">
-        <div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">{lotteryName} - Previsões Matemáticas</h2>
-          <p className="text-sm text-muted-foreground">Combinações geradas por análise estatística</p>
-        </div>
-        {/* Optional: Add Lottery logo here if needed */}
-      </div>
+      {/* Heat Map Section REMOVED - Data not available from current Python script */}
+      {/* <section className="section mb-6 md:mb-8"> ... </section> */}
       
-      {error && (
-        <div className="mb-4 p-4 bg-destructive/10 text-destructive border border-destructive/30 rounded-lg relative z-10">
-          <strong>Erro ao buscar previsões:</strong> {error}
-        </div>
-      )}
+      {/* Combinations Section (structure from original, data from API) */}
+      <section className="section mb-6 md:mb-8">
+        <div className="section-title text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center text-primary">Combinações Sugeridas</div>
+        {isGenerating && predictions.length === 0 ? ( // Show loading animation only when generating initially
+          <SmartPickLoading />
+        ) : predictions.length > 0 ? (
+          <div className="combos grid gap-4 md:gap-5">
+            {predictions.map((pred: Prediction, index: number) => {
+              const confidenceStyle = getConfidenceStyle(pred.confidence);
+              const mainNumbers = pred.numbers;
+              const specialBall = pred.megaBall; // Assuming megaBall field from API
 
-      <div className="overflow-x-auto rounded-lg border border-border relative z-10">
-        <table className="min-w-full bg-card">
-          <thead className="bg-muted/50">
-            <tr className="text-muted-foreground uppercase text-xs sm:text-sm leading-normal">
-              <th className="py-3 px-4 text-center">#</th>
-              <th className="py-3 px-4 text-left">Combinação Prevista</th>
-              <th className="py-3 px-4 text-center">Confiança</th>
-            </tr>
-          </thead>
-          <motion.tbody 
-            className="text-foreground text-sm font-light"
-            variants={tableVariants}
-            initial="hidden"
-            animate={isLoading ? "hidden" : "visible"}
-          >
-            {isLoading ? (
-              <tr>
-                <td colSpan={3} className="text-center py-10">
-                  <div className="flex justify-center items-center">
-                    <Loader2 className="animate-spin mr-3 h-6 w-6 text-primary" />
-                    <span className="text-lg font-medium text-muted-foreground">Calculando previsões...</span>
-                  </div>
-                </td>
-              </tr>
-            ) : predictions.length > 0 ? (
-              predictions.map((pred, index) => (
-                <motion.tr 
-                  key={`${isLoading}-${index}-${pred.numbers.join('-')}`} // More robust key
-                  className={`border-b border-border hover:bg-muted/50 ${index % 2 === 0 ? 'bg-muted/20' : ''}`}
-                  variants={rowVariants}
-                >
-                  <td className="py-3 px-4 text-center font-medium">{index + 1}</td>
-                  <td className="py-3 px-4 text-left">
-                    <div className="flex items-center space-x-1 flex-wrap">
-                      {pred.numbers.map((num, i) => (
-                        <span key={`num-${i}`} 
-                          className="font-semibold text-sm sm:text-base px-2 py-1 rounded-full bg-muted text-foreground my-0.5"
-                        >
-                          {num}
-                        </span>
-                      ))}
-                      {/* Display the special ball based on lottery type - simplistic check for now */}
-                      <span className="text-muted-foreground mx-1">+</span>
-                      <span 
-                        className={`font-semibold text-sm sm:text-base px-2 py-1 rounded-full ${lotteryId === 'powerball' ? 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300'} my-0.5`}
+              return (
+                <motion.div // Wrap card with motion.div
+                  key={`${index}-${mainNumbers.join(\'-\')}-${specialBall}`}
+                  className="combo-card bg-[var(--combo-card-bg)] rounded-[var(--radius)] p-4 md:p-5 px-5 md:px-7 flex flex-col sm:flex-row justify-between items-center sm:items-center gap-3 sm:gap-4 shadow-[0_0_16px_rgba(255,255,255,0.02)] border border-[var(--combo-card-border)]"
+                  initial={{ opacity: 0, y: 15 }} // Initial state for animation
+                  animate={{ opacity: 1, y: 0 }}   // Animate to this state
+                  transition={{ duration: 0.3, delay: index * 0.1 }} // Staggered animation
+                >                 {/* Numbers Display (style from original) */}
+                  <div className="numbers flex flex-wrap gap-2 justify-center sm:justify-start items-center">
+                    {mainNumbers.map((num, i) => (
+                       <motion.div // Add motion to number balls
+                         key={`combo-main-${i}`}
+                         className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-black font-semibold text-sm hover-scale" // Added hover-scale class
+                         whileHover={{ scale: 1.15, rotate: 5 }} // Add hover effect
+                         transition={{ type: "spring", stiffness: 400, damping: 15 }} // Springy effect
+                       >
+                         {num}
+                       </motion.div>
+                                       {specialBall !== undefined && (
+                      <motion.div // Add motion to special ball
+                        className={`w-9 h-9 rounded-full flex items-center justify-center text-black font-semibold text-sm ml-1 hover-scale ${lotteryId === \'powerball\' ? \'bg-red-400\' : \'bg-yellow-400\'}`} 
+                        whileHover={{ scale: 1.15, rotate: -5 }} // Add hover effect (rotate opposite)
+                        transition={{ type: "spring", stiffness: 400, damping: 15 }} // Springy effect
                       >
-                        {pred.megaBall} {/* Rename field in Python or handle different ball names here */} 
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 text-center">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getConfidenceColor(pred.confidence)}`}>
-                      {pred.confidence}
-                    </span>
-                  </td>
-                </motion.tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={3} className="text-center py-10 text-muted-foreground">
-                  Nenhuma previsão disponível no momento.
-                  {error && <span className="block mt-2 text-destructive">Tente novamente mais tarde.</span>}
-                </td>
-              </tr>
-            )}
-          </motion.tbody>
-        </table>
-      </div>
-      
-      <div className="mt-8 text-center relative z-10">
-        <motion.button 
-          className={`relative overflow-hidden ${isLoading ? 'bg-gray-400 dark:bg-gray-600' : 'bg-gradient-to-r from-primary to-purple-600'} text-primary-foreground font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed`}
+                        {specialBall}
+                      </motion.div>
+                    )}                  </div>
+                  {/* Confidence Level (style from original) */}
+                  <span className={`confidence text-sm py-1.5 px-3 rounded-full bg-[var(--combo-confidence-bg)] ${confidenceStyle.style} whitespace-nowrap`}>
+                    {confidenceStyle.text}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          // Display if loading finished but no predictions (and no error)
+          <div className="text-center text-muted-foreground py-10">
+             Nenhuma previsão disponível no momento.
+             {error && <span className="block mt-2 text-destructive">Tente novamente mais tarde.</span>} 
+          </div>
+        )}
+      </section>
+
+      {/* Generate Button Section (style from original) */}
+      <div className="relative mt-8 md:mt-10">
+         {showEffects && (
+          <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none overflow-hidden">
+            {/* Placeholder for effects if needed */}
+          </div>
+        )}
+        <motion.button // Use motion.button
           onClick={handleGenerateNewPicks}
-          disabled={isLoading}
-          whileTap={{ scale: 0.95 }}
+          disabled={isGenerating || isLoading} // Disable while loading or generating
+          className={`btn block mx-auto text-sm md:text-base font-bold py-3.5 md:py-4 px-8 md:px-10 rounded-[var(--radius)] cursor-pointer transition-opacity duration-300 ease-in-out shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden ${isGenerating || isLoading ? \'bg-muted\' : \'bg-primary text-primary-foreground animate-gradient-bg\'}`}
+          whileHover={{ scale: 1.05, y: -2 }} // Subtle lift and scale on hover
+          whileTap={{ scale: 0.95 }} // Scale down on tap
+          transition={{ type: "spring", stiffness: 300, damping: 20 }} // Springy transition
         >
-          {/* Animated background */}
-          {!isLoading && (
-            <span className="absolute inset-0 w-full h-full">
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary via-purple-600 to-primary bg-[length:200%_100%] animate-gradient"></span>
-            </span>
+          {isGenerating ? (
+             <span className="flex items-center justify-center">
+               <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
+               Gerando...
+             </span>
+          ) : (
+            '✨ Gerar com Smart Pick AI'
           )}
-          
-          {/* Button text */}
-          <span className="relative z-10 flex items-center justify-center">
-            {isLoading ? (
-              <>
-                <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4 text-primary-foreground" />
-                Calculando...
-              </>
-            ) : 'Gerar Novas Previsões'}
-          </span>
-        </motion.button>
+        </button>
       </div>
-      
-      {/* Gradient animation style */}
-      <style jsx>{`
-        @keyframes gradient {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .animate-gradient {
-          animation: gradient 3s ease infinite;
-        }
-      `}</style>
-    </motion.div>
+    </div>
   );
 }
 

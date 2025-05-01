@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react'; // Import useEffect
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Loader2 } from 'lucide-react'; // Import Loader2 for loading state
+import { motion, AnimatePresence } from 'framer-motion'; // Import motion and AnimatePresence
 import SmartPickComponent from '@/components/SmartPick';
 import ResultsTab from '@/components/ResultsTab';
 import FrequencyTab from '@/components/FrequencyTab';
@@ -146,24 +147,42 @@ export default function LotteryPageClient({ lotteryId }: LotteryPageClientProps)
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`
-                whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-semibold text-sm sm:text-base focus:outline-none transition-colors duration-200 flex-shrink-0
+                relative whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-semibold text-sm sm:text-base focus:outline-none transition-colors duration-200 flex-shrink-0
                 ${activeTab === tab
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                  ? 'border-transparent text-primary' // Remove border, rely on motion.div
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
                 }
               `}
               aria-current={activeTab === tab ? 'page' : undefined}
             >
               {tab}
+              {/* Animated underline for active tab */}
+              {activeTab === tab && (
+                <motion.div 
+                  className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-primary"
+                  layoutId="underline" // Shared layout ID for animation
+                  initial={false} // Prevent initial animation if it's the default tab
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }} // Spring animation
+                />
+              )}
             </button>
           ))}
         </nav>
       </div>
 
-      {/* Content Area */}
-      <div className="mt-4">
-        {renderContent()}
-      </div>
+      {/* Content Area with Animation */}
+      <AnimatePresence mode="wait"> {/* Use mode='wait' for smoother transitions */}
+        <motion.div
+          key={activeTab} // Animate when the activeTab changes
+          initial={{ opacity: 0, y: 10 }} // Start slightly down and faded out
+          animate={{ opacity: 1, y: 0 }}   // Fade in and move up
+          exit={{ opacity: 0, y: -10 }}  // Fade out and move slightly up
+          transition={{ duration: 0.3, ease: "easeInOut" }} // Faster, smoother transition
+          className="mt-4"
+        >
+          {renderContent()}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

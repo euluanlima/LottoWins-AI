@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap"); /* Added 800 weight */
 
 @tailwind base;
 @tailwind components;
@@ -6,109 +6,117 @@
 
 @layer base {
   :root {
-    /* Light Theme Variables */
-    --bg: #f5f5f5;
-    --surface: #ffffff;
-    --card: #ffffff;
-    --border: #e0e0e0;
-    --primary: #6366f1; /* Highlight color from reference */
-    --primary-foreground: #ffffff;
-    --text: #0a0a0a;
-    --muted: #666666;
-    --highlight: #00ffe0; /* Primary color from reference */
+    /* --- Enhanced Light Theme --- */
+    --bg-light: #f8f9fa; /* Slightly off-white */
+    --surface-light: #ffffff;
+    --card-light: #ffffff;
+    --border-light: #e9ecef; /* Softer border */
+    --primary-light: #7c3aed; /* Vibrant Purple */
+    --primary-foreground-light: #ffffff;
+    --secondary-light: #f1f3f5; /* Light gray for secondary elements */
+    --secondary-foreground-light: #495057;
+    --accent-light: #10b981; /* Emerald Green for accents/success */
+    --accent-foreground-light: #ffffff;
+    --text-light: #212529; /* Darker text for better contrast */
+    --muted-light: #6c757d; /* Standard muted */
+    --destructive-light: #dc2626; /* Red */
+    --destructive-foreground-light: #ffffff;
+    --ring-light: #a78bfa; /* Lighter purple for focus rings */
 
-    /* Heatmap colors (Light) */
-    --hot: #ff4d4f;
-    --hot-text: #ffffff;
-    --neutral: #facc15;
-    --neutral-text: #111111;
-    --cold: #3b82f6;
-    --cold-text: #ffffff;
-    --default-ball-bg: #e0e0e0; /* Lighter default for light theme */
-    --default-ball-text: #333333;
+    /* Heatmap (Light) - Adjusted for new palette */
+    --hot-light: #ef4444; /* Red */
+    --hot-text-light: #ffffff;
+    --neutral-light: #f59e0b; /* Amber */
+    --neutral-text-light: #ffffff;
+    --cold-light: #3b82f6; /* Blue */
+    --cold-text-light: #ffffff;
+    --default-ball-bg-light: #e9ecef;
+    --default-ball-text-light: #495057;
 
     /* Combo Card (Light) */
-    --combo-card-bg: #f0f0f0;
-    --combo-card-border: #d1d1d1;
-    --combo-card-text: #111111;
-    --combo-confidence-bg: #e0e0e0;
+    --combo-card-bg-light: #f1f3f5;
+    --combo-card-border-light: #dee2e6;
+    --combo-confidence-bg-light: #e9ecef;
 
-    --radius: 16px;
+    --radius: 0.75rem; /* Slightly smaller radius for a sharper look */
 
     /* --- Tailwind Mapping (Light) --- */
-    --background: 0 0% 96%;
-    --foreground: 0 0% 4%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 4%;
+    --background: 210 16% 98%; /* --bg-light */
+    --foreground: 210 10% 15%; /* --text-light */
+    --card: 0 0% 100%; /* --card-light */
+    --card-foreground: 210 10% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 4%;
-    --primary: 240 90% 65%; /* --highlight */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 64%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 173 100% 50%; /* --primary */
-    --accent-foreground: 0 0% 0%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
-    --ring: 240 90% 65%;
-    --radius: 1rem;
+    --popover-foreground: 210 10% 15%;
+    --primary: 262 83% 58%; /* --primary-light */
+    --primary-foreground: 0 0% 100%; /* --primary-foreground-light */
+    --secondary: 210 16% 95%; /* --secondary-light */
+    --secondary-foreground: 210 9% 31%; /* --secondary-foreground-light */
+    --muted: 210 9% 45%; /* --muted-light */
+    --muted-foreground: 210 7% 56%;
+    --accent: 152 88% 40%; /* --accent-light */
+    --accent-foreground: 0 0% 100%; /* --accent-foreground-light */
+    --destructive: 0 72% 51%; /* --destructive-light */
+    --destructive-foreground: 0 0% 100%; /* --destructive-foreground-light */
+    --border: 210 14% 92%; /* --border-light */
+    --input: 210 14% 92%;
+    --ring: 262 92% 75%; /* --ring-light */
+    --radius: 0.75rem;
   }
 
   .dark {
-    /* Dark Theme Variables (From reference HTML) */
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --card: rgba(255, 255, 255, 0.03);
-    --border: rgba(255, 255, 255, 0.05);
-    --primary: #00ffe0;
-    --primary-foreground: #000000;
-    --text: #f5f5f5;
-    --muted: #999;
-    --highlight: #6366f1;
+    /* --- Enhanced Dark Theme --- */
+    --bg-dark: #0d1117; /* GitHub dark */
+    --surface-dark: #161b22; /* GitHub dark surface */
+    --card-dark: #1e232b; /* Slightly lighter card */
+    --border-dark: #30363d; /* GitHub dark border */
+    --primary-dark: #a78bfa; /* Lighter Vibrant Purple */
+    --primary-foreground-dark: #161b22;
+    --secondary-dark: #21262d; /* Dark gray for secondary elements */
+    --secondary-foreground-dark: #c9d1d9; /* GitHub dark text */
+    --accent-dark: #2dd4bf; /* Teal accent */
+    --accent-foreground-dark: #0d1117;
+    --text-dark: #e6edf3; /* Lighter text */
+    --muted-dark: #8b949e; /* GitHub dark muted */
+    --destructive-dark: #f87171; /* Lighter Red */
+    --destructive-foreground-dark: #161b22;
+    --ring-dark: #7c3aed; /* Darker purple for focus rings */
 
-    /* Heatmap colors (Dark) */
-    --hot: #ff4d4f;
-    --hot-text: #ffffff;
-    --neutral: #facc15;
-    --neutral-text: #111111;
-    --cold: #3b82f6;
-    --cold-text: #ffffff;
-    --default-ball-bg: #1e1e1e;
-    --default-ball-text: var(--text);
+    /* Heatmap (Dark) - Adjusted */
+    --hot-dark: #f87171; /* Lighter Red */
+    --hot-text-dark: #161b22;
+    --neutral-dark: #fbbf24; /* Lighter Amber */
+    --neutral-text-dark: #161b22;
+    --cold-dark: #60a5fa; /* Lighter Blue */
+    --cold-text-dark: #161b22;
+    --default-ball-bg-dark: #30363d;
+    --default-ball-text-dark: #c9d1d9;
 
     /* Combo Card (Dark) */
-    --combo-card-bg: #1a1a1a;
-    --combo-card-border: #222;
-    --combo-card-text: var(--text);
-    --combo-confidence-bg: #1f1f1f;
-
-    --radius: 16px;
+    --combo-card-bg-dark: #21262d;
+    --combo-card-border-dark: #30363d;
+    --combo-confidence-bg-dark: #161b22;
 
     /* --- Tailwind Mapping (Dark) --- */
-    --background: 0 0% 4%;
-    --foreground: 0 0% 96%;
-    --card: 0 0% 100% / 0.03;
-    --card-foreground: 0 0% 96%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 96%;
-    --primary: 240 90% 65%; /* --highlight */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 60%;
-    --muted-foreground: 0 0% 64%;
-    --accent: 173 100% 50%; /* --primary */
-    --accent-foreground: 0 0% 0%;
-    --destructive: 0 63% 94%;
-    --destructive-foreground: 0 86% 97%;
-    --border: 0 0% 100% / 0.05;
-    --input: 0 0% 100% / 0.05;
-    --ring: 240 90% 65%;
-    --radius: 1rem;
+    --background: 212 28% 7%; /* --bg-dark */
+    --foreground: 212 20% 93%; /* --text-dark */
+    --card: 214 19% 15%; /* --card-dark */
+    --card-foreground: 212 20% 93%;
+    --popover: 212 28% 7%;
+    --popover-foreground: 212 20% 93%;
+    --primary: 262 92% 75%; /* --primary-dark */
+    --primary-foreground: 212 28% 7%; /* --primary-foreground-dark */
+    --secondary: 213 18% 15%; /* --secondary-dark */
+    --secondary-foreground: 212 17% 84%; /* --secondary-foreground-dark */
+    --muted: 213 10% 55%; /* --muted-dark */
+    --muted-foreground: 213 9% 65%;
+    --accent: 171 65% 50%; /* --accent-dark */
+    --accent-foreground: 212 28% 7%; /* --accent-foreground-dark */
+    --destructive: 0 93% 71%; /* --destructive-dark */
+    --destructive-foreground: 212 28% 7%; /* --destructive-foreground-dark */
+    --border: 210 13% 21%; /* --border-dark */
+    --input: 210 13% 21%;
+    --ring: 262 83% 58%; /* --ring-dark */
+    /* Radius remains the same */
   }
 }
 
@@ -122,28 +130,49 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Manrope', sans-serif;
-    /* Padding removed from body, applied in layout.tsx */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* Add smooth scroll */
+  html {
+    scroll-behavior: smooth;
   }
 }
 
-
-
-/* Add animations from the loading screen reference */
+/* Add more sophisticated animations */
 @layer utilities {
-  @keyframes pulseGlow {
-    0%, 100% { transform: scale(1); opacity: 0.9; }
-    50% { transform: scale(1.1); opacity: 1; }
+  /* Subtle fade-in-up animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
   }
-  .animate-pulseGlow {
-    animation: pulseGlow 2s infinite ease-in-out;
+  .animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out forwards;
   }
 
-  @keyframes fadein {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* Subtle scale-up on hover for interactive elements */
+  .hover-scale {
+    @apply transition-transform duration-200 ease-out;
   }
-  .animate-fadein {
-    animation: fadein 0.5s ease forwards; /* Adjusted duration slightly */
+  .hover-scale:hover {
+    @apply scale-105;
+  }
+
+  /* Gradient animation for buttons (like in SmartPick) */
+  @keyframes gradient-bg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .animate-gradient-bg {
+    background-size: 200% 200%;
+    animation: gradient-bg 4s ease infinite;
   }
 }
 
