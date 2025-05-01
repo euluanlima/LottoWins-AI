@@ -28,8 +28,21 @@ export default function SmartPickComponent({ lotteryId }: SmartPickProps) {
       // TODO: Pass lotteryId to API if backend supports it in the future
       const response = await fetch(`/api/predict?num=${numCombinations}`);
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+          const errorData: unknown = await response.json();
+          // Safely check if errorData is an object and has an 'error' property
+          if (typeof errorData === 'object' && errorData !== null && 'error' in errorData && typeof errorData.error === 'string') {
+            errorMessage = errorData.error;
+          } else {
+            // Optionally log the unexpected error format
+            console.warn('API error response format unexpected:', errorData);
+          }
+        } catch (jsonError) {
+          // Handle cases where response.json() fails (e.g., not valid JSON)
+          console.error('Failed to parse error response JSON:', jsonError);
+        }
+        throw new Error(errorMessage);
       }
       const data: Prediction[] = await response.json();
       setPredictions(data);
