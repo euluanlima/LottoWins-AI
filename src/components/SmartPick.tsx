@@ -213,20 +213,24 @@ export default function SmartPickComponent({ lotteryId }: SmartPickComponentProp
                        >
                          {num}
                        </motion.div>
-                                       {specialBall !== undefined && (
+                    ))}
+                    {/* Render Special Ball OUTSIDE the map loop */}
+                    {specialBall !== undefined && (
                       <motion.div // Add motion to special ball
+                        key={`combo-special-${index}`}
                         className={`w-9 h-9 rounded-full flex items-center justify-center text-black font-semibold text-sm ml-1 hover-scale ${lotteryId === \'powerball\' ? \'bg-red-400\' : \'bg-yellow-400\'}`} 
                         whileHover={{ scale: 1.15, rotate: -5 }} // Add hover effect (rotate opposite)
                         transition={{ type: "spring", stiffness: 400, damping: 15 }} // Springy effect
                       >
                         {specialBall}
                       </motion.div>
-                    )}                  </div>
+                    )}
+                  </div> {/* End of numbers div */}
                   {/* Confidence Level (style from original) */}
                   <span className={`confidence text-sm py-1.5 px-3 rounded-full bg-[var(--combo-confidence-bg)] ${confidenceStyle.style} whitespace-nowrap`}>
                     {confidenceStyle.text}
                   </span>
-                </div>
+                </motion.div> {/* Correct closing tag for the card motion.div */}
               );
             })}
           </div>

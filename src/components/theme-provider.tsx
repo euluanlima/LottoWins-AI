@@ -1,12 +1,11 @@
-
 "use client"
 
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
+import type { ThemeProviderProps } from "next-themes/dist/types" // Explicitly import the type
 
-// Removendo a definição local de ThemeProviderProps e a tipagem explícita
-export function ThemeProvider({ children, ...props }: { children: React.ReactNode; [key: string]: any }) {
-  // Passando as props diretamente para NextThemesProvider
+// Use the imported ThemeProviderProps type
+export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>
 }
 
