@@ -9,11 +9,16 @@ const EXTERNAL_API_URL = 'https://api.lotteryresultsapi.com/alpha';
 // Force this route to be dynamic
 export const dynamic = 'force-dynamic';
 
+// Define the context type for the API route
+type RouteContext = {
+  params: { lotteryTag: string };
+};
+
 export async function GET(
   request: Request,
-  { params } // Let TypeScript infer the type for params
+  context: RouteContext
 ) {
-  const lotteryTag = params.lotteryTag;
+  const lotteryTag = context.params.lotteryTag;
 
   if (!lotteryTag) {
     return NextResponse.json({ error: 'Lottery tag is required' }, { status: 400 });
