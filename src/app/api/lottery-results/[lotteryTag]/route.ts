@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(
   request: Request,
-  { params }: { params: { lotteryTag: string } }
+  { params } // Let TypeScript infer the type for params
 ) {
   const lotteryTag = params.lotteryTag;
 
