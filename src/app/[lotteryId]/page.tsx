@@ -12,8 +12,8 @@ export function generateStaticParams() {
 }
 
 // Server Component for a specific lottery page
-// Using inline type for props to potentially resolve build error
-export default async function LotteryPage({ params }: { params: { lotteryId: string } }) {
+// Removing explicit type annotation for props to let TypeScript infer
+export default async function LotteryPage({ params }) {
   // Pass params.lotteryId directly to the client component
   // This might help avoid the "params should be awaited" issue
   const lotteryId = params.lotteryId;
