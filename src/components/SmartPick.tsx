@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion'; // Temporarily remove framer-motion
 import { Loader2 } from 'lucide-react';
 import SmartPickLoading from './SmartPickLoading'; // Assuming this exists for loading animation
 
@@ -196,41 +196,41 @@ export default function SmartPickComponent({ lotteryId }: SmartPickComponentProp
               const specialBall = pred.megaBall; // Assuming megaBall field from API
 
               return (
-                <motion.div // Wrap card with motion.div
-                  key={`${index}-${mainNumbers.join(\'-\')}-${specialBall}`}
+                <div // Replaced motion.div with div
+                  key={`${index}-${mainNumbers.join(\'-\\)}-${specialBall}`}
                   className="combo-card bg-[var(--combo-card-bg)] rounded-[var(--radius)] p-4 md:p-5 px-5 md:px-7 flex flex-col sm:flex-row justify-between items-center sm:items-center gap-3 sm:gap-4 shadow-[0_0_16px_rgba(255,255,255,0.02)] border border-[var(--combo-card-border)]"
-                  initial={{ opacity: 0, y: 15 }} // Initial state for animation
-                  animate={{ opacity: 1, y: 0 }}   // Animate to this state
-                  transition={{ duration: 0.3, delay: index * 0.1 }} // Staggered animation
+                  // initial={{ opacity: 0, y: 15 }} // Removed animation props
+                  // animate={{ opacity: 1, y: 0 }}   // Removed animation props
+                  // transition={{ duration: 0.3, delay: index * 0.1 }} // Removed animation props
                 >                 {/* Numbers Display (style from original) */}
                   <div className="numbers flex flex-wrap gap-2 justify-center sm:justify-start items-center">
                     {mainNumbers.map((num, i) => (
-                       <motion.div // Add motion to number balls
+                       <div // Replaced motion.div with div
                          key={`combo-main-${i}`}
-                         className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-black font-semibold text-sm hover-scale" // Added hover-scale class
-                         whileHover={{ scale: 1.15, rotate: 5 }} // Add hover effect
-                         transition={{ type: "spring", stiffness: 400, damping: 15 }} // Springy effect
+                         className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-black font-semibold text-sm hover-scale" // Kept hover-scale for potential CSS hover
+                         // whileHover={{ scale: 1.15, rotate: 5 }} // Removed animation props
+                         // transition={{ type: "spring", stiffness: 400, damping: 15 }} // Removed animation props
                        >
                          {num}
-                       </motion.div>
+                       </div>
                     ))}
                     {/* Render Special Ball OUTSIDE the map loop */}
                     {specialBall !== undefined && (
-                      <motion.div // Add motion to special ball
+                      <div // Replaced motion.div with div
                         key={`combo-special-${index}`}
                         className={`w-9 h-9 rounded-full flex items-center justify-center text-black font-semibold text-sm ml-1 hover-scale ${lotteryId === \'powerball\' ? \'bg-red-400\' : \'bg-yellow-400\'}`} 
-                        whileHover={{ scale: 1.15, rotate: -5 }} // Add hover effect (rotate opposite)
-                        transition={{ type: "spring", stiffness: 400, damping: 15 }} // Springy effect
+                        // whileHover={{ scale: 1.15, rotate: -5 }} // Removed animation props
+                        // transition={{ type: "spring", stiffness: 400, damping: 15 }} // Removed animation props
                       >
                         {specialBall}
-                      </motion.div>
+                      </div>
                     )}
                   </div> {/* End of numbers div */}
                   {/* Confidence Level (style from original) */}
                   <span className={`confidence text-sm py-1.5 px-3 rounded-full bg-[var(--combo-confidence-bg)] ${confidenceStyle.style} whitespace-nowrap`}>
                     {confidenceStyle.text}
                   </span>
-                </motion.div> {/* Correct closing tag for the card motion.div */}
+                </div> {/* Correct closing tag for the card motion.div */}
               );
             })}
           </div>
@@ -250,13 +250,13 @@ export default function SmartPickComponent({ lotteryId }: SmartPickComponentProp
             {/* Placeholder for effects if needed */}
           </div>
         )}
-        <motion.button // Use motion.button
+        <button // Replaced motion.button with button
           onClick={handleGenerateNewPicks}
           disabled={isGenerating || isLoading} // Disable while loading or generating
           className={`btn block mx-auto text-sm md:text-base font-bold py-3.5 md:py-4 px-8 md:px-10 rounded-[var(--radius)] cursor-pointer transition-opacity duration-300 ease-in-out shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden ${isGenerating || isLoading ? \'bg-muted\' : \'bg-primary text-primary-foreground animate-gradient-bg\'}`}
-          whileHover={{ scale: 1.05, y: -2 }} // Subtle lift and scale on hover
-          whileTap={{ scale: 0.95 }} // Scale down on tap
-          transition={{ type: "spring", stiffness: 300, damping: 20 }} // Springy transition
+          // whileHover={{ scale: 1.05, y: -2 }} // Removed animation props
+          // whileTap={{ scale: 0.95 }} // Removed animation props
+          // transition={{ type: "spring", stiffness: 300, damping: 20 }} // Removed animation props
         >
           {isGenerating ? (
              <span className="flex items-center justify-center">
