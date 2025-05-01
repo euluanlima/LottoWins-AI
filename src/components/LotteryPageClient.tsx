@@ -60,9 +60,14 @@ export default function LotteryPageClient({ lotteryId }: LotteryPageClientProps)
         }
         const data: Result[] = await response.json();
         setResults(data);
-      } catch (err: any) {
+      } catch (err) { // err is 'unknown'
         console.error("Error fetching lottery results:", err);
-        setError(err.message || "An unknown error occurred while fetching results.");
+        // Type check to safely access error message
+        let errorMessage = "An unknown error occurred while fetching results.";
+        if (err instanceof Error) {
+          errorMessage = err.message;
+        }
+        setError(errorMessage);
         // Fallback to mock data on error
         const fallbackData = (mockResultsData as any)[lotteryId as keyof typeof mockResultsData] || [];
         setResults(fallbackData);

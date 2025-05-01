@@ -71,20 +71,38 @@ export async function GET(
         return NextResponse.json({ error: 'Unexpected API response structure' }, { status: 500 });
     }
 
-  } catch (error: any) {
-    console.error('Error fetching from external API:', error.response?.status, error.response?.data, error.message);
+  } catch (error) { // error is 'unknown'
+    // Log the raw error for debugging
+    console.error('Raw error fetching from external API:', error);
+
     let status = 500;
     let message = 'Failed to fetch lottery results';
+
+    // Check if it's an Axios error first
     if (axios.isAxiosError(error)) {
+        console.error('Axios error details:', error.response?.status, error.response?.data, error.message);
         if (error.response) {
             status = error.response.status;
-            message = error.response.data?.message || error.response.data?.error || message;
+            // Safely access potential error messages from response data
+            const responseData = error.response.data;
+            message = responseData?.message || responseData?.error || message;
             if (status === 401) message = 'Authentication failed. Check API Token.';
             if (status === 404) message = `Lottery data not found for tag: ${lotteryTag}`;
         } else if (error.request) {
+            console.error('Axios error: No response received');
             message = 'No response received from external API';
+        } else {
+            // Error setting up the request
+            console.error('Axios setup error:', error.message);
+            message = error.message || message;
         }
+    } else if (error instanceof Error) {
+        // Handle generic Error objects
+        console.error('Generic error:', error.message);
+        message = error.message;
     }
+    // For other unknown error types, the default message is used
+
     return NextResponse.json({ error: message }, { status });
   }
 }
