@@ -197,7 +197,7 @@ export default function SmartPickComponent({ lotteryId }: SmartPickComponentProp
 
               return (
                 <div // Replaced motion.div with div
-                  key={`${index}-${mainNumbers.join(\'-\\)}-${specialBall}`}
+                  key={`${index}-${mainNumbers.join("-")}-${specialBall}`}
                   className="combo-card bg-[var(--combo-card-bg)] rounded-[var(--radius)] p-4 md:p-5 px-5 md:px-7 flex flex-col sm:flex-row justify-between items-center sm:items-center gap-3 sm:gap-4 shadow-[0_0_16px_rgba(255,255,255,0.02)] border border-[var(--combo-card-border)]"
                   // initial={{ opacity: 0, y: 15 }} // Removed animation props
                   // animate={{ opacity: 1, y: 0 }}   // Removed animation props
@@ -218,7 +218,7 @@ export default function SmartPickComponent({ lotteryId }: SmartPickComponentProp
                     {specialBall !== undefined && (
                       <div // Replaced motion.div with div
                         key={`combo-special-${index}`}
-                        className={`w-9 h-9 rounded-full flex items-center justify-center text-black font-semibold text-sm ml-1 hover-scale ${lotteryId === \'powerball\' ? \'bg-red-400\' : \'bg-yellow-400\'}`} 
+                        className={`w-9 h-9 rounded-full flex items-center justify-center text-black font-semibold text-sm ml-1 hover-scale ${lotteryId === "powerball" ? "bg-red-400" : "bg-yellow-400"}`} 
                         // whileHover={{ scale: 1.15, rotate: -5 }} // Removed animation props
                         // transition={{ type: "spring", stiffness: 400, damping: 15 }} // Removed animation props
                       >
@@ -253,7 +253,7 @@ export default function SmartPickComponent({ lotteryId }: SmartPickComponentProp
         <button // Replaced motion.button with button
           onClick={handleGenerateNewPicks}
           disabled={isGenerating || isLoading} // Disable while loading or generating
-          className={`btn block mx-auto text-sm md:text-base font-bold py-3.5 md:py-4 px-8 md:px-10 rounded-[var(--radius)] cursor-pointer transition-opacity duration-300 ease-in-out shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden ${isGenerating || isLoading ? \'bg-muted\' : \'bg-primary text-primary-foreground animate-gradient-bg\'}`}
+          className={`btn block mx-auto text-sm md:text-base font-bold py-3.5 md:py-4 px-8 md:px-10 rounded-[var(--radius)] cursor-pointer transition-opacity duration-300 ease-in-out shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden ${isGenerating || isLoading ? "bg-muted" : "bg-primary text-primary-foreground animate-gradient-bg"}`}
           // whileHover={{ scale: 1.05, y: -2 }} // Removed animation props
           // whileTap={{ scale: 0.95 }} // Removed animation props
           // transition={{ type: "spring", stiffness: 300, damping: 20 }} // Removed animation props

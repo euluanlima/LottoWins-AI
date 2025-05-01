@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion'; // Import motion
+// import { motion, AnimatePresence } from 'framer-motion'; // Temporarily remove framer-motion
 
 // Define the messages to cycle through
 const messages = [
@@ -41,18 +41,11 @@ const SmartPickLoading: React.FC = () => {
 
   return (
     // Mimic body styles from reference HTML for centering
-    <div className="flex flex-col items-center justify-center p-5 min-h-[300px]">      {/* Loader Glow with Framer Motion */}
-      <motion.div 
+    <div className="flex flex-col items-center justify-center p-5 min-h-[300px]">
+      {/* Loader Glow - Removed Framer Motion */}
+      <div 
         className="loader-glow w-[110px] h-[110px] rounded-full bg-transparent shadow-[0_0_20px_rgba(139,92,246,0.4),_0_0_40px_rgba(0,255,224,0.15)] flex items-center justify-center mb-6 relative overflow-hidden bg-transparent"
-        animate={{
-          scale: [1, 1.05, 1],
-          opacity: [0.9, 1, 0.9],
-        }}
-        transition={{
-          duration: 2,
-          ease: "easeInOut",
-          repeat: Infinity,
-        }}
+        // Removed animation props
       >
         {/* Use the transparent logo - Added bg-transparent to ensure no default background */}
         <Image 
@@ -64,23 +57,20 @@ const SmartPickLoading: React.FC = () => {
         />
       </div>
 
-      {/* Message Wrapper with Animation */}
+      {/* Message Wrapper - Removed Animation */}
       <div className="message-wrapper min-h-[28px] mb-8">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentMessageIndex} // Animate when index changes
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+        {/* Removed AnimatePresence */}
+          <div
+            key={currentMessageIndex} // Keep key for React updates
+            // Removed animation props
             className="loading-text text-xl text-center text-muted"
           >
             {messages[currentMessageIndex]}
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        {/* Removed AnimatePresence */}
       </div>
 
-      {/* Numbers - Conditionally display and apply animation */}
+      {/* Numbers - Conditionally display */}
       {showNumbers && (
         <div className="numbers text-3xl font-bold tracking-[8px] text-accent animate-fadein">
           {/* Placeholder numbers - Real numbers will be shown when loading finishes */}
