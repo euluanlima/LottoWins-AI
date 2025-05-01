@@ -1,4 +1,5 @@
 import React from 'react';
+import mockResultsData from '@/data/mockResults.json'; // Import mock data
 
 // Interface for a single result (consistent with LotteryPageClient)
 interface Result {
