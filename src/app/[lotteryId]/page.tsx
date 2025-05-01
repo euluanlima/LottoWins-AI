@@ -11,14 +11,9 @@ export function generateStaticParams() {
   }));
 }
 
-// Define the expected props type
-interface LotteryPageProps {
-  params: { lotteryId: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
 // Server Component for a specific lottery page
-export default async function LotteryPage({ params }: LotteryPageProps) {
+// Using inline type for props to potentially resolve build error
+export default async function LotteryPage({ params }: { params: { lotteryId: string } }) {
   // Pass params.lotteryId directly to the client component
   // This might help avoid the "params should be awaited" issue
   const lotteryId = params.lotteryId;
