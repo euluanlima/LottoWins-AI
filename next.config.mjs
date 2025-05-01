@@ -1,6 +1,6 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-  // Removed output: "standalone" to rely on Vercel defaults
+  trailingSlash: false, // Explicitly set trailingSlash to false
 };
 
 export default nextConfig;
