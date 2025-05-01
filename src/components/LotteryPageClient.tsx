@@ -55,8 +55,13 @@ export default function LotteryPageClient({ lotteryId }: LotteryPageClientProps)
       try {
         const response = await fetch(`/api/lottery-results/${lotteryId}`);
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Failed to fetch results (${response.status})`);
+          const errorData: unknown = await response.json();
+          // Safely access the error property from the unknown type
+          let apiErrorMessage = `Failed to fetch results (${response.status})`;
+          if (typeof errorData === 'object' && errorData !== null && 'error' in errorData && typeof errorData.error === 'string') {
+            apiErrorMessage = errorData.error;
+          }
+          throw new Error(apiErrorMessage);
         }
         const data: Result[] = await response.json();
         setResults(data);
