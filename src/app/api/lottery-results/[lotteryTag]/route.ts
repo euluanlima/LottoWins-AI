@@ -9,14 +9,10 @@ const EXTERNAL_API_URL = 'https://api.lotteryresultsapi.com/alpha';
 // Force this route to be dynamic
 export const dynamic = 'force-dynamic';
 
-// Define the context type for the API route
-type RouteContext = {
-  params: { lotteryTag: string };
-};
-
+// Removing explicit type annotation for context as strict mode is disabled
 export async function GET(
   request: Request,
-  context: RouteContext
+  context
 ) {
   const lotteryTag = context.params.lotteryTag;
 

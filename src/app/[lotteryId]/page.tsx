@@ -11,14 +11,9 @@ export function generateStaticParams() {
   }));
 }
 
-// Define the standard Next.js PageProps type
-type PageProps = {
-  params: { lotteryId: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
 // Server Component for a specific lottery page
-export default async function LotteryPage({ params }: PageProps) {
+// Removing explicit type annotation for props as strict mode is disabled
+export default async function LotteryPage({ params }) {
   // Pass params.lotteryId directly to the client component
   // This might help avoid the "params should be awaited" issue
   const lotteryId = params.lotteryId;
