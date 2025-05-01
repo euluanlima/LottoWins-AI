@@ -1,6 +1,6 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-  output: "standalone", // Add this line for Vercel compatibility
+  // Removed output: "standalone" to rely on Vercel defaults
 };
 
 export default nextConfig;
