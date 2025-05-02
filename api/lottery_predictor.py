@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-from mlxtend.frequent_patterns import apriori, association_rules
-from mlxtend.preprocessing import TransactionEncoder
 from itertools import combinations
 from datetime import datetime
 import json
