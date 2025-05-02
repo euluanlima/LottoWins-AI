@@ -87,7 +87,7 @@ export default function LotteryPageClient({ lotteryId }: LotteryPageClientProps)
     }
 
     // Default to Previsões
-    return <SmartPickComponent lotteryId={lotteryId} />;
+    return <SmartPickComponent />;
   };
 
   // Handle invalid lotteryId

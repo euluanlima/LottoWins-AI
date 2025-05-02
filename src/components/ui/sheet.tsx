@@ -1,25 +1,25 @@
 "use client"
 
-import * as React from "react"
-import * as SheetPrimitive from "@radix-ui/react-dialog"
+import React from "react"
+import { Root, Trigger, Close, Portal, Overlay, Content, Title, Description } from "@radix-ui/react-dialog" // Use named imports
 import { cva, type VariantProps } from "class-variance-authority"
 import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const Sheet = SheetPrimitive.Root
+const Sheet = Root // Use named import
 
-const SheetTrigger = SheetPrimitive.Trigger
+const SheetTrigger = Trigger // Use named import
 
-const SheetClose = SheetPrimitive.Close
+const SheetClose = Close // Use named import
 
-const SheetPortal = SheetPrimitive.Portal
+const SheetPortal = Portal // Use named import
 
 const SheetOverlay = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
+  React.ElementRef<typeof Overlay>,
+  React.ComponentPropsWithoutRef<typeof Overlay>
 >(({ className, ...props }, ref) => (
-  <SheetPrimitive.Overlay
+  <Overlay // Use named import
     className={cn(
       "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
@@ -28,7 +28,7 @@ const SheetOverlay = React.forwardRef<
     ref={ref}
   />
 ))
-SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
+SheetOverlay.displayName = Overlay.displayName // Use named import
 
 const sheetVariants = cva(
   "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out",
@@ -50,29 +50,29 @@ const sheetVariants = cva(
 )
 
 interface SheetContentProps
-  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+  extends React.ComponentPropsWithoutRef<typeof Content>,
     VariantProps<typeof sheetVariants> {}
 
 const SheetContent = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Content>,
+  React.ElementRef<typeof Content>,
   SheetContentProps
 >(({ side = "right", className, children, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
-    <SheetPrimitive.Content
+    <Content // Use named import
       ref={ref}
       className={cn(sheetVariants({ side }), className)}
       {...props}
     >
-      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+      <Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"> {/* Use named import */}
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
-      </SheetPrimitive.Close>
+      </Close>
       {children}
-    </SheetPrimitive.Content>
+    </Content>
   </SheetPortal>
 ))
-SheetContent.displayName = SheetPrimitive.Content.displayName
+SheetContent.displayName = Content.displayName // Use named import
 
 const SheetHeader = ({
   className,
@@ -103,28 +103,28 @@ const SheetFooter = ({
 SheetFooter.displayName = "SheetFooter"
 
 const SheetTitle = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
+  React.ElementRef<typeof Title>,
+  React.ComponentPropsWithoutRef<typeof Title>
 >(({ className, ...props }, ref) => (
-  <SheetPrimitive.Title
+  <Title // Use named import
     ref={ref}
     className={cn("text-lg font-semibold text-foreground", className)}
     {...props}
   />
 ))
-SheetTitle.displayName = SheetPrimitive.Title.displayName
+SheetTitle.displayName = Title.displayName // Use named import
 
 const SheetDescription = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
+  React.ElementRef<typeof Description>,
+  React.ComponentPropsWithoutRef<typeof Description>
 >(({ className, ...props }, ref) => (
-  <SheetPrimitive.Description
+  <Description // Use named import
     ref={ref}
     className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
 ))
-SheetDescription.displayName = SheetPrimitive.Description.displayName
+SheetDescription.displayName = Description.displayName // Use named import
 
 export {
   Sheet,
@@ -138,3 +138,4 @@ export {
   SheetTitle,
   SheetDescription,
 }
+

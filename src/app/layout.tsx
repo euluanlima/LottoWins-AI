@@ -7,7 +7,8 @@ import { ThemeProvider } from '@/components/theme-provider'
 import ThemeToggle from '@/components/ThemeToggle';
 import Image from 'next/image'; // Import Image for the logo
 
-import { motion } from 'framer-motion'; // Import motion
+// Remove framer-motion import
+// import { motion } from 'framer-motion';
 
 // Configure Manrope font
 const manrope = Manrope({
@@ -59,15 +60,16 @@ export default function RootLayout({
               </div>
             </header>
             
-            {/* Main content area with animation */}
-            <motion.main 
+            {/* Main content area - Replace motion.main with main */}
+            <main 
               className="flex-1 w-full"
-              initial={{ opacity: 0, y: 20 }} // Start invisible and slightly down
-              animate={{ opacity: 1, y: 0 }}   // Fade in and move up
-              transition={{ duration: 0.5, ease: "easeOut" }} // Animation settings
+              // Remove animation props
+              // initial={{ opacity: 0, y: 20 }}
+              // animate={{ opacity: 1, y: 0 }}
+              // transition={{ duration: 0.5, ease: "easeOut" }}
             >
               {children}
-            </motion.main>
+            </main>
             
             {/* Simplified Footer */}
             <footer className="pt-8 mt-8 border-t border-border/50">
@@ -81,4 +83,5 @@ export default function RootLayout({
     </html>
   )
 }
+
 
