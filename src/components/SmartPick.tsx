@@ -202,8 +202,9 @@ export default function SmartPickComponent({ lotteryId }: SmartPickComponentProp
                   // initial={{ opacity: 0, y: 15 }} // Removed animation props
                   // animate={{ opacity: 1, y: 0 }}   // Removed animation props
                   // transition={{ duration: 0.3, delay: index * 0.1 }} // Removed animation props
-                >                 {/* Numbers Display (style from original) */}
+                >
                   <div className="numbers flex flex-wrap gap-2 justify-center sm:justify-start items-center">
+                    {/* Numbers Display (style from original) */}
                     {mainNumbers.map((num, i) => (
                        <div // Replaced motion.div with div
                          key={`combo-main-${i}`}
@@ -225,7 +226,8 @@ export default function SmartPickComponent({ lotteryId }: SmartPickComponentProp
                         {specialBall}
                       </div>
                     )}
-                  </div> {/* End of numbers div */}
+                  </div>
+                  {/* End of numbers div */}
                   {/* Confidence Level (style from original) */}
                   <span className={`confidence text-sm py-1.5 px-3 rounded-full bg-[var(--combo-confidence-bg)] ${confidenceStyle.style} whitespace-nowrap`}>
                     {confidenceStyle.text}
